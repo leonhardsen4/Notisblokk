@@ -18,16 +18,6 @@ public class ConnectionFactory {
         }
     }
 
-    public static void closeConnection(Connection connection){
-        try {
-            if (connection != null){
-                connection.close();
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException("Erro na conexão com o banco de dados", ex);
-        }
-    }
-
     public static void closeConnection(Connection connection, PreparedStatement statement){
         try {
             if (connection != null){

@@ -111,26 +111,6 @@ public class TagsDAO extends GenericDAO<Tags> {
         }
     }
 
-    public Tags find(String string) {
-        Tags tag = new Tags();
-        try {
-            sql = "SELECT * FROM TAGS WHERE TAG LIKE '" + string + "'";
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                tag.setId(rs.getInt("ID"));
-                tag.setTag(rs.getString("TAG"));
-            }
-            return tag;
-        } catch (SQLException e) {
-            e.fillInStackTrace();
-            e.getCause();
-            throw new RuntimeException(e.getMessage());
-        } finally {
-            closeConnection(conn, pstmt, rs);
-        }
-    }
-
     public Tags findID(int id) {
         Tags tag = new Tags();
         try {

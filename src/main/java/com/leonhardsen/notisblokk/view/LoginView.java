@@ -6,7 +6,6 @@ import com.leonhardsen.notisblokk.controller.NoteController;
 import com.leonhardsen.notisblokk.controller.TagController;
 import com.leonhardsen.notisblokk.model.Notes;
 import com.leonhardsen.notisblokk.model.Tags;
-import com.leonhardsen.notisblokk.model.Users;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

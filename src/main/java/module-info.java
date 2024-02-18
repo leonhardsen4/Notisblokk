@@ -1,4 +1,5 @@
 module com.leonhardsen.notisblokk {
+
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
@@ -6,9 +7,6 @@ module com.leonhardsen.notisblokk {
     requires static lombok;
     requires org.jetbrains.annotations;
 
-
-    opens com.leonhardsen.notisblokk to javafx.fxml;
-    exports com.leonhardsen.notisblokk;
     opens com.leonhardsen.notisblokk.view to javafx.fxml;
     exports com.leonhardsen.notisblokk.view;
     opens com.leonhardsen.notisblokk.controller to javafx.fxml;
