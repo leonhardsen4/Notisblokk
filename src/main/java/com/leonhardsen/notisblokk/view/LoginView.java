@@ -62,7 +62,6 @@ public class LoginView extends Application {
         tagStage.setResizable(false);
         tagStage.setTitle("Tag");
         tagStage.setScene(scene);
-        tagStage.setOnCloseRequest(event -> {});
         tagStage.show();
     }
 
@@ -79,7 +78,6 @@ public class LoginView extends Application {
         noteStage.setMinHeight(400);
         noteStage.setTitle("Note");
         noteStage.setScene(scene);
-        noteStage.setOnCloseRequest(event -> {});
         noteStage.show();
     }
 
