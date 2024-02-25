@@ -29,7 +29,8 @@ public class JusNoteController implements Initializable {
     @FXML public AnchorPane statusBar;
     @FXML public Label lblDataHora;
     @FXML public Label lblUsuario;
-    @FXML public Label lblInicio;
+    @FXML public Label lblNotisblokk;
+    @FXML public Label lblAudiences;
     @FXML public ImageView imgBurger;
     public Stage jusNoteStage;
 
@@ -43,8 +44,13 @@ public class JusNoteController implements Initializable {
         Timeline clock = getClock();
         clock.play();
 
-        lblInicio.setOnMouseClicked(event -> {
+        lblNotisblokk.setOnMouseClicked(event -> {
             LoginView.openMainScreen();
+            closeSideMenu();
+        });
+
+        lblAudiences.setOnMouseClicked(event -> {
+            LoginView.openListAudiences();
             closeSideMenu();
         });
 

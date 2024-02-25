@@ -21,6 +21,7 @@ public class LoginView extends Application {
     public LoginController loginController;
     public JusNoteController jusNoteController;
     public static MainScreenController mainScreenController;
+    public static ListAudiencesController listAudiencesController;
     public TagController tagController;
     public NoteController noteController;
     public Stage jusNoteStage;
@@ -28,9 +29,10 @@ public class LoginView extends Application {
     public Stage tagStage;
     public Stage noteStage;
 
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 300, 300);
         loginController = fxmlLoader.getController();
         loginController.setLoginView(this);
@@ -57,7 +59,11 @@ public class LoginView extends Application {
     }
 
     public static void openMainScreen(){
-        setMainPane("MainScreen.fxml", "#rootPane");
+        setPane("MainScreen.fxml", "mainScreenController","#rootPane");
+    }
+
+    public static void openListAudiences(){
+        setPane("List_audiences.fxml", "listAudiencesController", "#anchorListAudiences");
     }
 
     public void openTagView(Tags tag) throws IOException {
@@ -91,11 +97,11 @@ public class LoginView extends Application {
         noteStage.show();
     }
 
-    public static void setMainPane(String fxmlPath, String anchor) {
+    private static void setPane(String fxmlPath, String controllerName, String anchor) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource(fxmlPath));
             Parent root = fxmlLoader.load();
-            mainScreenController = fxmlLoader.getController();
+            Object controller = fxmlLoader.getController();
             AnchorPane anchorPane = (AnchorPane) root.lookup(anchor);
             anchorPane.setBackground(Background.fill(Color.WHITE));
             AnchorPane mainPane = JusNoteController.instance.mainPane;
@@ -106,9 +112,13 @@ public class LoginView extends Application {
             AnchorPane.setRightAnchor(anchorPane, 0.0);
             AnchorPane.setTopAnchor(anchorPane, 0.0);
             AnchorPane.setBottomAnchor(anchorPane, 0.0);
+            if (controllerName.equals("listAudiencesController")) {
+                listAudiencesController = (ListAudiencesController) controller;
+            } else if (controllerName.equals("mainScreenController")) {
+                mainScreenController = (MainScreenController) controller;
+            }
         } catch (IOException ex) {
             ex.fillInStackTrace();
-            ex.getCause();
             throw new RuntimeException(ex.getMessage());
         }
     }
