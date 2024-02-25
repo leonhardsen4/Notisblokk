@@ -5,6 +5,8 @@ import com.leonhardsen.notisblokk.dao.TagsDAO;
 import com.leonhardsen.notisblokk.model.Notes;
 import com.leonhardsen.notisblokk.model.Tags;
 import com.leonhardsen.notisblokk.view.LoginView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -20,6 +22,8 @@ import lombok.Setter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
@@ -36,10 +40,12 @@ public class MainScreenController implements Initializable {
     @FXML public TableColumn<Notes, String> colStatus;
     @FXML public TableColumn<Notes, Integer> colEditar;
     @FXML public ImageView imgPlus;
+    @FXML public ComboBox<String> cmbFiltro;
 
     public LoginView loginView;
     public Tags tagItem;
     public Notes noteItem;
+    public String statusItem;
     public static MainScreenController instance;
 
     @Setter
@@ -77,7 +83,7 @@ public class MainScreenController implements Initializable {
             try {
                 if (tagItem != null) {
                     loginView = new LoginView();
-                    loginView.openNoteView(tagItem, null);
+                    loginView.openNoteView(tagItem, null, null);
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Tag não selecionada");
@@ -115,6 +121,25 @@ public class MainScreenController implements Initializable {
 
         statusColor();
 
+        cmbFiltro.setItems(listaFiltro());
+        cmbFiltro.getSelectionModel().selectFirst();
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> populaTabela());
+
+    }
+
+    public ObservableList<String> listaFiltro(){
+        List<String> lista = new ArrayList<>();
+        lista.add("MOSTRAR TODOS");
+        lista.add("A RESOLVER");
+        lista.add("ATRASADO");
+        lista.add("BLOQUEADO");
+        lista.add("CANCELADO");
+        lista.add("EM ANDAMENTO");
+        lista.add("EM REVISÃO");
+        lista.add("PENDENTE DE APROVAÇÃO");
+        lista.add("PRIORIDADE");
+        lista.add("RESOLVIDO");
+        return FXCollections.observableArrayList(lista);
     }
 
     public void populaLista() {
@@ -132,7 +157,8 @@ public class MainScreenController implements Initializable {
         colEditar.setStyle("-fx-alignment: CENTER");
         if (tagItem != null) {
             NotesDAO notesDAO = new NotesDAO();
-            tblNote.setItems(notesDAO.getAll(tagItem.getId()));
+            tblNote.setItems(notesDAO.getAll(tagItem.getId(),
+                    cmbFiltro.getSelectionModel().getSelectedItem()));
         }
     }
 
@@ -152,9 +178,10 @@ public class MainScreenController implements Initializable {
                             noteItem = getTableView().getItems().get(getIndex());
                             TagsDAO tagsDAO = new TagsDAO();
                             tagItem = tagsDAO.findID(noteItem.getId_tag());
+                            statusItem = noteItem.getStatus();
                             loginView = new LoginView();
                             try {
-                                loginView.openNoteView(tagItem, noteItem);
+                                loginView.openNoteView(tagItem, noteItem, statusItem);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }

@@ -30,17 +30,21 @@ public class NoteController implements Initializable {
     @FXML public ComboBox<String> cmbStatus;
     public Notes noteItem;
     public Tags tagItem;
+    public String statusItem;
 
     @Setter
     private Stage currentStage;
 
-    public void setData(Tags tagItem, Notes noteItem){
+    public void setData(Tags tagItem, Notes noteItem, String statusItem){
         this.tagItem = tagItem;
         this.noteItem = noteItem;
+        this.statusItem = statusItem;
+
         if (tagItem != null && noteItem != null){
             txtTitulo.setText(noteItem.getTitulo());
             txtAnotacao.setText(noteItem.getRelato());
             txtTitulo.requestFocus();
+            cmbStatus.getSelectionModel().select(statusItem);
         } else {
             txtTitulo.requestFocus();
         }
@@ -82,8 +86,8 @@ public class NoteController implements Initializable {
                 }
             });
         } else {
+            NotesDAO notesDAO =  new NotesDAO();
             if (noteItem == null) {
-                NotesDAO notesDAO =  new NotesDAO();
                 Notes note = new Notes();
                 note.setId_tag(tagItem.getId());
                 note.setData(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -92,7 +96,6 @@ public class NoteController implements Initializable {
                 note.setStatus(cmbStatus.getSelectionModel().getSelectedItem());
                 notesDAO.save(note);
             } else {
-                NotesDAO notesDAO =  new NotesDAO();
                 noteItem.setData(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 noteItem.setTitulo(txtTitulo.getText());
                 noteItem.setRelato(txtAnotacao.getText());
@@ -106,7 +109,7 @@ public class NoteController implements Initializable {
     public void fecharJanela() {
         MainScreenController.instance.populaLista();
         MainScreenController.instance.populaTabela();
-        MainScreenController.instance.tagItem = null;
+        //MainScreenController.instance.tagItem = null;
         MainScreenController.instance.noteItem = null;
         currentStage.close();
     }

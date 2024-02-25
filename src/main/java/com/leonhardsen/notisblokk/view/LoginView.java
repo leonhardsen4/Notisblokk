@@ -65,13 +65,13 @@ public class LoginView extends Application {
         tagStage.show();
     }
 
-    public void openNoteView(Tags tag, Notes note) throws IOException {
+    public void openNoteView(Tags tag, Notes note, String status) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("NoteScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 400);
         noteController = fxmlLoader.getController();
         noteStage = new Stage();
         noteController.setCurrentStage(noteStage);
-        noteController.setData(tag, note);
+        noteController.setData(tag, note, status);
         noteStage.initOwner(mainStage);
         noteStage.initModality(Modality.APPLICATION_MODAL);
         noteStage.setMinWidth(400);

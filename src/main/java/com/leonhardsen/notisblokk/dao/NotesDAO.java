@@ -77,11 +77,19 @@ public class NotesDAO extends GenericDAO<Notes> {
     public ObservableList<Notes> getAll() {
         return null;
     }
-    public ObservableList<Notes> getAll(int id_tag) {
+    public ObservableList<Notes> getAll(int id_tag, String status) {
         List<Notes> notes = new ArrayList<>();
         try {
-            sql = "SELECT * FROM NOTAS WHERE ID_TAG = " + id_tag + ";";
-            pstmt = conn.prepareStatement(sql);
+            if (status.equals("MOSTRAR TODOS")) {
+                sql = "SELECT * FROM NOTAS WHERE ID_TAG = ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, id_tag);
+            } else {
+                sql = "SELECT * FROM NOTAS WHERE ID_TAG = ? AND STATUS LIKE ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, id_tag);
+                pstmt.setString(2, status);
+            }
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Notes note = new Notes();
