@@ -39,7 +39,7 @@ public class TagController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        btnDelete.setOnMouseClicked(event -> deletaTag(tagItem));
+        btnDelete.setOnMouseClicked(event -> deletaTag());
         btnSave.setOnMouseClicked(event -> salvaTag());
     }
 
@@ -54,14 +54,12 @@ public class TagController implements Initializable {
                 }
             });
         } else {
+            TagsDAO tagsDAO = new TagsDAO();
+            Tags tag = new Tags();
             if (tagItem == null) {
-                TagsDAO tagsDAO = new TagsDAO();
-                Tags tag = new Tags();
                 tag.setTag(txtTag.getText());
                 tagsDAO.save(tag);
             } else {
-                TagsDAO tagsDAO = new TagsDAO();
-                Tags tag = new Tags();
                 tag.setId(tagItem.getId());
                 tag.setTag(txtTag.getText());
                 tagsDAO.update(tag);
@@ -70,18 +68,22 @@ public class TagController implements Initializable {
         fecharJanela();
     }
 
-    private void deletaTag(Tags tag) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Exclusão");
-        alert.setHeaderText("Tem certeza que deseja excluir a tag selecionada?");
-        alert.setContentText("Tag: " + tag.getTag());
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                TagsDAO tagsDAO = new TagsDAO();
-                tagsDAO.delete(tag);
-                fecharJanela();
-            }
-        });
+    private void deletaTag() {
+        if (tagItem == null) {
+            fecharJanela();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exclusão");
+            alert.setHeaderText("Tem certeza que deseja excluir a tag selecionada?");
+            alert.setContentText("Tag: " + tagItem.getTag());
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    TagsDAO tagsDAO = new TagsDAO();
+                    tagsDAO.delete(tagItem);
+                    fecharJanela();
+                }
+            });
+        }
     }
 
     public void fecharJanela() {

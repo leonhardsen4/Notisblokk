@@ -1,14 +1,16 @@
 package com.leonhardsen.notisblokk.view;
 
-import com.leonhardsen.notisblokk.controller.LoginController;
-import com.leonhardsen.notisblokk.controller.MainScreenController;
-import com.leonhardsen.notisblokk.controller.NoteController;
-import com.leonhardsen.notisblokk.controller.TagController;
+import com.leonhardsen.notisblokk.controller.*;
 import com.leonhardsen.notisblokk.model.Notes;
 import com.leonhardsen.notisblokk.model.Tags;
+import com.leonhardsen.notisblokk.model.Users;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -17,9 +19,11 @@ import java.io.IOException;
 public class LoginView extends Application {
 
     public LoginController loginController;
-    public MainScreenController mainScreenController;
+    public JusNoteController jusNoteController;
+    public static MainScreenController mainScreenController;
     public TagController tagController;
     public NoteController noteController;
+    public Stage jusNoteStage;
     public Stage mainStage;
     public Stage tagStage;
     public Stage noteStage;
@@ -37,17 +41,23 @@ public class LoginView extends Application {
         stage.show();
     }
 
-    public void openMainScreen() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("MainScreen.fxml"));
+    public void openJusNote(Users user) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("JusNote.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 500);
-        mainScreenController = fxmlLoader.getController();
-        mainStage = new Stage();
-        mainScreenController.setCurrentStage(mainStage);
-        mainStage.setTitle("MainScreen");
-        mainStage.setMinWidth(600);
-        mainStage.setMinHeight(400);
-        mainStage.setScene(scene);
-        mainStage.show();
+        jusNoteController = fxmlLoader.getController();
+        jusNoteStage = new Stage();
+        jusNoteController.setCurrentStage(jusNoteStage);
+        jusNoteController.setUser(user);
+        jusNoteStage.setTitle("JusNote :: Anotações seguras para seus processos");
+        jusNoteStage.setMaximized(true);
+        jusNoteStage.setMinWidth(600);
+        jusNoteStage.setMinHeight(400);
+        jusNoteStage.setScene(scene);
+        jusNoteStage.show();
+    }
+
+    public static void openMainScreen(){
+        setMainPane("MainScreen.fxml", "#rootPane");
     }
 
     public void openTagView(Tags tag) throws IOException {
@@ -79,6 +89,28 @@ public class LoginView extends Application {
         noteStage.setTitle("Note");
         noteStage.setScene(scene);
         noteStage.show();
+    }
+
+    public static void setMainPane(String fxmlPath, String anchor) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource(fxmlPath));
+            Parent root = fxmlLoader.load();
+            mainScreenController = fxmlLoader.getController();
+            AnchorPane anchorPane = (AnchorPane) root.lookup(anchor);
+            anchorPane.setBackground(Background.fill(Color.WHITE));
+            AnchorPane mainPane = JusNoteController.instance.mainPane;
+            mainPane.getChildren().add(anchorPane);
+            anchorPane.maxWidthProperty().bind(mainPane.widthProperty());
+            anchorPane.maxHeightProperty().bind(mainPane.heightProperty());
+            AnchorPane.setLeftAnchor(anchorPane, 0.0);
+            AnchorPane.setRightAnchor(anchorPane, 0.0);
+            AnchorPane.setTopAnchor(anchorPane, 0.0);
+            AnchorPane.setBottomAnchor(anchorPane, 0.0);
+        } catch (IOException ex) {
+            ex.fillInStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     public static void main(String[] args) {

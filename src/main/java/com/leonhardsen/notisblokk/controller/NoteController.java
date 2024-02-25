@@ -62,17 +62,21 @@ public class NoteController implements Initializable {
     }
 
     private void deletaNota() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Exclusão");
-        alert.setHeaderText("Tem certeza que deseja excluir a nota selecionada?");
-        alert.setContentText("Nota: " + noteItem.getTitulo());
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                NotesDAO notesDAO = new NotesDAO();
-                notesDAO.delete(noteItem);
-                fecharJanela();
-            }
-        });
+        if (noteItem == null){
+            fecharJanela();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exclusão");
+            alert.setHeaderText("Tem certeza que deseja excluir a nota selecionada?");
+            alert.setContentText("Nota: " + noteItem.getTitulo());
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    NotesDAO notesDAO = new NotesDAO();
+                    notesDAO.delete(noteItem);
+                    fecharJanela();
+                }
+            });
+        }
     }
 
     private void salvaNota() {
@@ -109,7 +113,6 @@ public class NoteController implements Initializable {
     public void fecharJanela() {
         MainScreenController.instance.populaLista();
         MainScreenController.instance.populaTabela();
-        //MainScreenController.instance.tagItem = null;
         MainScreenController.instance.noteItem = null;
         currentStage.close();
     }

@@ -24,7 +24,7 @@
       </Text>
     </AnchorPane>
     <SplitPane dividerPositions="0.5" layoutX="5.0" layoutY="50.0" prefHeight="346.0" prefWidth="589.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0">
-        <AnchorPane maxWidth="300.0" minWidth="160.0" prefWidth="200.0">
+        <AnchorPane maxWidth="300.0" minWidth="50.0" prefWidth="200.0">
             <ListView fx:id="listTag" layoutX="10.0" layoutY="72.0" prefHeight="255.0" prefWidth="260.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="72.0" />
             <Label layoutX="10.0" layoutY="42.0" text="Tags" textFill="#8d8282" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <font>

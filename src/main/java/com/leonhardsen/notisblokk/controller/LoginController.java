@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -32,6 +33,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Database.createTables();
         txtUsuario.requestFocus();
         btnEntrar.setOnMouseClicked(e -> {
             try {
@@ -42,14 +44,13 @@ public class LoginController implements Initializable {
         });
     }
 
-    public void efetuarLogin() throws Exception {
+    public void efetuarLogin() throws IOException {
         String usuario = txtUsuario.getText();
         String senha = Crypthograph.SHA256(txtSenha.getText());
         UsersDAO usersDAO = new UsersDAO();
         Users usr = usersDAO.find(usuario, senha);
         if (usr != null){
-            Database.createTables();
-            loginView.openMainScreen();
+            loginView.openJusNote(usr);
             fecharLogin();
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
