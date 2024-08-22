@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,9 +31,11 @@ public class JusNoteController implements Initializable {
     @FXML public Label lblDataHora;
     @FXML public Label lblUsuario;
     @FXML public Label lblNotisblokk;
+    @FXML public Label lblKontakter;
     @FXML public Label lblAudiences;
     @FXML public ImageView imgBurger;
     public Stage jusNoteStage;
+    public Users usr;
 
     boolean isOpen;
     public static JusNoteController instance;
@@ -44,12 +47,26 @@ public class JusNoteController implements Initializable {
         Timeline clock = getClock();
         clock.play();
 
-        lblNotisblokk.setOnMouseClicked(event -> {
+        lblUsuario.setOnMouseClicked(e -> {
+            try {
+                LoginView loginView = new LoginView();
+                loginView.ChangePasswordWindow();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        lblNotisblokk.setOnMouseClicked(e -> {
             LoginView.openMainScreen();
             closeSideMenu();
         });
 
-        lblAudiences.setOnMouseClicked(event -> {
+        lblKontakter.setOnMouseClicked(e-> {
+            LoginView.openKontakterScreen();
+            closeSideMenu();
+        });
+
+        lblAudiences.setOnMouseClicked(e -> {
             LoginView.openListAudiences();
             closeSideMenu();
         });
@@ -59,7 +76,7 @@ public class JusNoteController implements Initializable {
         translateTransition.play();
         isOpen = false;
 
-        imgBurger.setOnMouseClicked(event -> {
+        imgBurger.setOnMouseClicked(e -> {
             if (isOpen) {
                 closeSideMenu();
             } else {
@@ -67,7 +84,7 @@ public class JusNoteController implements Initializable {
             }
         });
 
-        mainPane.setOnMouseClicked(event -> {
+        mainPane.setOnMouseClicked(e -> {
             if (isOpen) {
                 closeSideMenu();
             }
@@ -109,7 +126,8 @@ public class JusNoteController implements Initializable {
     }
 
     public void setUser(Users user){
-        lblUsuario.setText("USUÁRIO: " + user.getUser());
+        usr = user;
+        lblUsuario.setText("USUÁRIO: " + usr.getUser());
     }
 
     public void setCurrentStage(Stage jusNoteStage) {

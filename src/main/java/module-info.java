@@ -4,8 +4,10 @@ module com.leonhardsen.notisblokk {
     requires javafx.fxml;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
-    requires static lombok;
     requires org.jetbrains.annotations;
+    requires java.desktop;
+    requires javafx.web;
+    requires jdk.compiler;
 
     opens com.leonhardsen.notisblokk.view to javafx.fxml;
     exports com.leonhardsen.notisblokk.view;
@@ -17,5 +19,7 @@ module com.leonhardsen.notisblokk {
     exports com.leonhardsen.notisblokk.dao;
     opens com.leonhardsen.notisblokk.utils to javafx.fxml;
     exports com.leonhardsen.notisblokk.utils;
+
+
 
 }

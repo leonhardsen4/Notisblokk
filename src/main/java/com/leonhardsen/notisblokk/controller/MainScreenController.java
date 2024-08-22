@@ -1,25 +1,24 @@
 package com.leonhardsen.notisblokk.controller;
 
 import com.leonhardsen.notisblokk.dao.NotesDAO;
+import com.leonhardsen.notisblokk.dao.StatusDAO;
 import com.leonhardsen.notisblokk.dao.TagsDAO;
 import com.leonhardsen.notisblokk.model.Notes;
+import com.leonhardsen.notisblokk.model.Status;
 import com.leonhardsen.notisblokk.model.Tags;
 import com.leonhardsen.notisblokk.view.LoginView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import lombok.Setter;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,8 +37,8 @@ public class MainScreenController implements Initializable {
     @FXML public TableColumn<Notes, String> colData;
     @FXML public TableColumn<Notes, String> colTitulo;
     @FXML public TableColumn<Notes, String> colStatus;
-    @FXML public TableColumn<Notes, Integer> colEditar;
     @FXML public ImageView imgPlus;
+    @FXML public TextField txtPesquisaNotas;
     @FXML public ComboBox<String> cmbFiltro;
 
     public LoginView loginView;
@@ -47,15 +46,16 @@ public class MainScreenController implements Initializable {
     public Notes noteItem;
     public String statusItem;
     public static MainScreenController instance;
-
-    @Setter
-    private Stage currentStage;
+    public ObservableList<Notes> notesList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         instance = this;
 
-        txtPesquisa.textProperty().addListener((observable, oldValue, newValue) -> {
+        notesList = FXCollections.observableArrayList();
+
+        txtPesquisa.textProperty().addListener((value, oldValue, newValue) -> {
             try {
                 TagsDAO tagsDAO = new TagsDAO();
                 listTag.setItems(tagsDAO.search(newValue));
@@ -65,6 +65,7 @@ public class MainScreenController implements Initializable {
                 throw new RuntimeException(e.getMessage());
             }
         });
+
 
         btnTag.setOnMouseClicked(e -> {
             try {
@@ -121,24 +122,51 @@ public class MainScreenController implements Initializable {
 
         statusColor();
 
-        cmbFiltro.setItems(listaFiltro());
+        cmbFiltro.setItems(listaStatus());
         cmbFiltro.getSelectionModel().selectFirst();
-        cmbFiltro.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> populaTabela());
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> populaTabela());
+        txtPesquisaNotas.textProperty().addListener((a, b, c) -> populaTabela());
+
+        cmbFiltro.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                try {
+                    loginView = new LoginView();
+                    loginView.openStatusView();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        tblNote.setRowFactory(e -> {
+            TableRow<Notes> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    noteItem = row.getItem();
+                    TagsDAO tagsDAO = new TagsDAO();
+                    tagItem = tagsDAO.findID(noteItem.getId_tag());
+                    statusItem = noteItem.getStatus();
+                    loginView = new LoginView();
+                    try {
+                        loginView.openNoteView(tagItem, noteItem, statusItem);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
+            return row;
+        });
 
     }
 
-    public ObservableList<String> listaFiltro(){
+    public ObservableList<String> listaStatus(){
+        StatusDAO statusDAO = new StatusDAO();
+        ObservableList<Status> listaStatus = statusDAO.getAll();
         List<String> lista = new ArrayList<>();
         lista.add("MOSTRAR TODOS");
-        lista.add("A RESOLVER");
-        lista.add("ATRASADO");
-        lista.add("BLOQUEADO");
-        lista.add("CANCELADO");
-        lista.add("EM ANDAMENTO");
-        lista.add("EM REVISÃO");
-        lista.add("PENDENTE DE APROVAÇÃO");
-        lista.add("PRIORIDADE");
-        lista.add("RESOLVIDO");
+        for (Status status : listaStatus) {
+            lista.add(status.getStatus());
+        }
         return FXCollections.observableArrayList(lista);
     }
 
@@ -153,110 +181,37 @@ public class MainScreenController implements Initializable {
         colTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblNote.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-        botaoEditar();
-        colEditar.setStyle("-fx-alignment: CENTER");
         if (tagItem != null) {
             NotesDAO notesDAO = new NotesDAO();
-            tblNote.setItems(notesDAO.getAll(tagItem.getId(),
-                    cmbFiltro.getSelectionModel().getSelectedItem()));
+            String filtroStatus = cmbFiltro.getSelectionModel().getSelectedItem();
+            String filtroTitulo = txtPesquisaNotas.getText();
+            notesList.setAll(notesDAO.getAll(tagItem.getId(), filtroStatus, filtroTitulo));
+            tblNote.setItems(notesList);
         }
     }
 
-    private void botaoEditar() {
-        Callback<TableColumn<Notes, Integer>, TableCell<Notes, Integer>> cellFactory = new Callback<>() {
+    private void statusColor() {
+        colStatus.setCellFactory(e -> new TableCell<>() {
             @Override
-            public TableCell<Notes, Integer> call(final TableColumn<Notes, Integer> param) {
-                return new TableCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    StatusDAO statusDAO = new StatusDAO();
+                    Status status = statusDAO.findByStatus(item);
 
-                    private final Button btnEditar = new Button("");
-                    private final ImageView imgEditar = new ImageView();
-                    private final File logoFile = new File("src/main/resources/com/leonhardsen/notisblokk/image/pen.png");
-                    private final Image editarImg = new Image(logoFile.toURI().toString());
-
-                    {
-                        btnEditar.setOnMouseClicked(event -> {
-                            noteItem = getTableView().getItems().get(getIndex());
-                            TagsDAO tagsDAO = new TagsDAO();
-                            tagItem = tagsDAO.findID(noteItem.getId_tag());
-                            statusItem = noteItem.getStatus();
-                            loginView = new LoginView();
-                            try {
-                                loginView.openNoteView(tagItem, noteItem, statusItem);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                    if (status != null) {
+                        Rectangle colorSquare = new Rectangle(20, 20);
+                        colorSquare.setFill(Color.web(status.getCor()));
+                        HBox hbox = new HBox(5, colorSquare, new Label(item));
+                        setGraphic(hbox);
+                    } else {
+                        setGraphic(null);
+                        setText(item);
                     }
-
-                    @Override
-                    public void updateItem(Integer item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            imgEditar.setImage(editarImg);
-                            imgEditar.setFitHeight(15);
-                            imgEditar.setFitWidth(15);
-                            btnEditar.setGraphic(imgEditar);
-                            btnEditar.setCursor(Cursor.HAND);
-                            btnEditar.setStyle("-fx-background-color: #f89128; -fx-text-fill: #FFFFFF; -fx-background-radius: 10");
-                            setGraphic(btnEditar);
-                        }
-                    }
-                };
-            }
-        };
-        colEditar.setCellFactory(cellFactory);
-    }
-
-    private void statusColor(){
-        colStatus.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<Notes, String> call(TableColumn<Notes, String> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (item == null || empty) {
-                            setText(null);
-                            setStyle("");
-                        } else {
-                            setText(item);
-                            switch (item) {
-                                case "A RESOLVER":
-                                    setStyle("-fx-background-color: #e2d970; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                case "ATRASADO":
-                                    setStyle("-fx-background-color: #f73d28; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                case "BLOQUEADO":
-                                    setStyle("-fx-background-color: #ff9d02; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                case "CANCELADO":
-                                    setStyle("-fx-background-color: gray; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                case "EM ANDAMENTO":
-                                    setStyle("-fx-background-color: #6696e1; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                case "EM REVISÃO":
-                                    setStyle("-fx-background-color: #a74c9d; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                case "PENDENTE DE APROVAÇÃO":
-                                    setStyle("-fx-background-color: #eb99b9; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                case "PRIORIDADE":
-                                    setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-weight: bold;");
-                                    break;
-                                case "RESOLVIDO":
-                                    setStyle("-fx-background-color: #00ce7e; -fx-text-fill: black; -fx-font-weight: bold;");
-                                    break;
-                                default:
-                                    setStyle("");
-                                    break;
-                            }
-                        }
-                    }
-                };
+                }
             }
         });
     }

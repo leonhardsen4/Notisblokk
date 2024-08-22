@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.MainScreenController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.MainScreenController">
     <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #4682B4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTISBLOKK" textAlignment="CENTER">
          <font>
@@ -51,13 +51,12 @@
          </TextField>
         </AnchorPane>
         <AnchorPane minWidth="300.0">
-            <TableView fx:id="tblNote" layoutX="14.0" layoutY="48.0" prefHeight="279.0" prefWidth="387.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="48.0">
+            <TableView fx:id="tblNote" layoutX="14.0" layoutY="72.0" prefHeight="456.0" prefWidth="462.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="72.0">
                 <columns>
-                    <TableColumn fx:id="colID" editable="false" maxWidth="70.0" minWidth="40.0" prefWidth="40.0" text="ID" />
+                    <TableColumn fx:id="colID" editable="false" maxWidth="70.0" minWidth="40.0" prefWidth="40.0" text="ID" visible="false" />
                     <TableColumn fx:id="colData" editable="false" maxWidth="80.0" minWidth="80.0" text="Data" />
                     <TableColumn fx:id="colTitulo" editable="false" prefWidth="500.0" text="Título" />
                <TableColumn fx:id="colStatus" editable="false" maxWidth="180.0" prefWidth="120.0" text="Status" />
-               <TableColumn fx:id="colEditar" editable="false" maxWidth="65.0" minWidth="65.0" text="Editar" />
                 </columns>
             <columnResizePolicy>
                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -81,7 +80,15 @@
                <Cursor fx:constant="HAND" />
             </cursor>
             </Button>
-         <ComboBox fx:id="cmbFiltro" layoutX="102.0" layoutY="9.0" prefHeight="25.0" prefWidth="180.0" promptText="Filtrar" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="10.0" />
+         <ComboBox fx:id="cmbFiltro" layoutX="292.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" promptText="Filtrar" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor></ComboBox>
+         <TextField fx:id="txtPesquisaNotas" layoutX="11.0" layoutY="40.0" prefHeight="25.0" prefWidth="270.0" promptText="Pesquisa" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="40.0">
+            <cursor>
+               <Cursor fx:constant="TEXT" />
+            </cursor>
+         </TextField>
         </AnchorPane>
     </SplitPane>
 </AnchorPane>

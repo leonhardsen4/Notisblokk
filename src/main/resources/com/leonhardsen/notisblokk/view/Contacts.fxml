@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.KontakterController">
+    <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #4682B4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KONTAKTER" textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+    </AnchorPane>
+      <Button fx:id="btnAdicionar" layoutX="740.0" layoutY="66.0" mnemonicParsing="false" style="-fx-background-color: #4682B4;" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="66.0">
+          <graphic>
+              <ImageView fx:id="imgPlus" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../image/add.png" />
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+              </ImageView>
+          </graphic>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+      </Button>
+   <TextField fx:id="txtPesquisa" layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="715.0" promptText="Pesquisa" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="66.0">
+      <cursor>
+         <Cursor fx:constant="TEXT" />
+      </cursor>
+   </TextField>
+      <TableView fx:id="tblContatos" layoutX="28.0" layoutY="104.0" prefHeight="476.0" prefWidth="760.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="104.0">
+          <columns>
+              <TableColumn fx:id="colID" editable="false" maxWidth="70.0" minWidth="40.0" prefWidth="40.0" text="ID" visible="false" />
+              <TableColumn fx:id="colNome" editable="false" maxWidth="400.0" minWidth="50.0" prefWidth="300.0" text="Nome" />
+              <TableColumn fx:id="colTelefone" editable="false" maxWidth="300.0" minWidth="50.0" prefWidth="120.0" text="Telefone" />
+         <TableColumn fx:id="colEmail" editable="false" maxWidth="300.0" minWidth="50.0" prefWidth="150.0" text="Email" />
+         <TableColumn fx:id="colEndereco" editable="false" maxWidth="500.0" minWidth="50.0" prefWidth="300.0" text="Endereço" />
+         <TableColumn fx:id="colObservacoes" editable="false" maxWidth="500.0" prefWidth="122.0" text="Observações" />
+          </columns>
+      </TableView>
+</AnchorPane>

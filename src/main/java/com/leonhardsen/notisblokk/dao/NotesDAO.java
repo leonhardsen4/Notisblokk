@@ -21,7 +21,7 @@ public class NotesDAO extends GenericDAO<Notes> {
             pstmt.setInt(2, notes.getId_tag());
             pstmt.setString(3, notes.getData());
             pstmt.setString(4, notes.getTitulo());
-            pstmt.setString(5, notes.getRelato());
+            pstmt.setBytes(5, notes.getRelato());
             pstmt.setString(6, notes.getStatus());
             pstmt.execute();
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class NotesDAO extends GenericDAO<Notes> {
             pstmt.setInt(1, notes.getId_tag());
             pstmt.setString(2, notes.getData());
             pstmt.setString(3, notes.getTitulo());
-            pstmt.setString(4, notes.getRelato());
+            pstmt.setBytes(4, notes.getRelato());
             pstmt.setString(5, notes.getStatus());
             pstmt.setInt(6, notes.getId());
             pstmt.execute();
@@ -77,15 +77,20 @@ public class NotesDAO extends GenericDAO<Notes> {
     public ObservableList<Notes> getAll() {
         return null;
     }
-    public ObservableList<Notes> getAll(int id_tag, String status) {
+
+    public ObservableList<Notes> getAll(int id_tag, String status, String titulo) {
         List<Notes> notes = new ArrayList<>();
         try {
-            if (status.equals("MOSTRAR TODOS")) {
+            if (status == null) {
                 sql = "SELECT * FROM NOTAS WHERE ID_TAG = ?";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, id_tag);
+            } else if (status.equals("MOSTRAR TODOS")) {
+                sql = "SELECT * FROM NOTAS WHERE ID_TAG = ? AND TITULO LIKE '%" + titulo + "%'";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, id_tag);
             } else {
-                sql = "SELECT * FROM NOTAS WHERE ID_TAG = ? AND STATUS LIKE ?";
+                sql = "SELECT * FROM NOTAS WHERE ID_TAG = ? AND STATUS LIKE ? AND TITULO LIKE '%" + titulo + "%'";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, id_tag);
                 pstmt.setString(2, status);
@@ -97,7 +102,7 @@ public class NotesDAO extends GenericDAO<Notes> {
                 note.setId_tag(rs.getInt("ID_TAG"));
                 note.setData(rs.getString("DATA"));
                 note.setTitulo(rs.getString("TITULO"));
-                note.setRelato(rs.getString("RELATO"));
+                note.setRelato(rs.getBytes("RELATO"));
                 note.setStatus(rs.getString("STATUS"));
                 notes.add(note);
             }
