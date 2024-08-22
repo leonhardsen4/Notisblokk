@@ -3,36 +3,31 @@ package com.leonhardsen.notisblokk.controller;
 import com.leonhardsen.notisblokk.dao.NotesDAO;
 import com.leonhardsen.notisblokk.model.Notes;
 import com.leonhardsen.notisblokk.model.Tags;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import java.nio.charset.StandardCharsets;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
-import lombok.Setter;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class NoteController implements Initializable {
 
-    @FXML public TextField txtTitulo;
-    @FXML public Button btnSave;
-    @FXML public ImageView imgSave;
-    @FXML public Button btnDelete;
-    @FXML public ImageView imgDelete;
-    @FXML public TextArea txtAnotacao;
-    @FXML public ComboBox<String> cmbStatus;
+    public TextField txtTitulo;
+    public Button btnSave;
+    public ImageView imgSave;
+    public Button btnDelete;
+    public ImageView imgDelete;
+    public HTMLEditor htmlEditor;
+    public ComboBox<String> cmbStatus;
     public Notes noteItem;
     public Tags tagItem;
     public String statusItem;
 
-    @Setter
     private Stage currentStage;
 
     public void setData(Tags tagItem, Notes noteItem, String statusItem){
@@ -42,7 +37,10 @@ public class NoteController implements Initializable {
 
         if (tagItem != null && noteItem != null){
             txtTitulo.setText(noteItem.getTitulo());
-            txtAnotacao.setText(noteItem.getRelato());
+            if (noteItem.getRelato() != null) {
+                String htmlContent = new String(noteItem.getRelato(), StandardCharsets.UTF_8);
+                htmlEditor.setHtmlText(htmlContent);
+            }
             txtTitulo.requestFocus();
             cmbStatus.getSelectionModel().select(statusItem);
         } else {
@@ -53,11 +51,11 @@ public class NoteController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        cmbStatus.setItems(listaStatus());
+        cmbStatus.setItems(MainScreenController.instance.listaStatus());
         cmbStatus.getSelectionModel().selectFirst();
 
-        btnDelete.setOnMouseClicked(event -> deletaNota());
-        btnSave.setOnMouseClicked(event -> salvaNota());
+        btnDelete.setOnMouseClicked(e -> deletaNota());
+        btnSave.setOnMouseClicked(e -> salvaNota());
 
     }
 
@@ -96,13 +94,17 @@ public class NoteController implements Initializable {
                 note.setId_tag(tagItem.getId());
                 note.setData(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 note.setTitulo(txtTitulo.getText());
-                note.setRelato(txtAnotacao.getText());
+                String htmlContent = htmlEditor.getHtmlText();
+                byte[] htmlBytes = htmlContent.getBytes(StandardCharsets.UTF_8);
+                note.setRelato(htmlBytes);
                 note.setStatus(cmbStatus.getSelectionModel().getSelectedItem());
                 notesDAO.save(note);
             } else {
                 noteItem.setData(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 noteItem.setTitulo(txtTitulo.getText());
-                noteItem.setRelato(txtAnotacao.getText());
+                String htmlContent = htmlEditor.getHtmlText();
+                byte[] htmlBytes = htmlContent.getBytes(StandardCharsets.UTF_8);
+                noteItem.setRelato(htmlBytes);
                 noteItem.setStatus(cmbStatus.getSelectionModel().getSelectedItem());
                 notesDAO.update(noteItem);
             }
@@ -113,22 +115,13 @@ public class NoteController implements Initializable {
     public void fecharJanela() {
         MainScreenController.instance.populaLista();
         MainScreenController.instance.populaTabela();
+        MainScreenController.instance.listaStatus();
         MainScreenController.instance.noteItem = null;
         currentStage.close();
     }
 
-    public ObservableList<String> listaStatus(){
-        List<String> lista = new ArrayList<>();
-        lista.add("A RESOLVER");
-        lista.add("ATRASADO");
-        lista.add("BLOQUEADO");
-        lista.add("CANCELADO");
-        lista.add("EM ANDAMENTO");
-        lista.add("EM REVISÃO");
-        lista.add("PENDENTE DE APROVAÇÃO");
-        lista.add("PRIORIDADE");
-        lista.add("RESOLVIDO");
-        return FXCollections.observableArrayList(lista);
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
     }
 
 }

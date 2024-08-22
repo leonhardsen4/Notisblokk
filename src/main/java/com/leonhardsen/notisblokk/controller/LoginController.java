@@ -6,13 +6,8 @@ import com.leonhardsen.notisblokk.utils.Crypthograph;
 import com.leonhardsen.notisblokk.utils.Database;
 import com.leonhardsen.notisblokk.view.LoginView;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,15 +15,13 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    @Getter
-    @Setter
-    private LoginView loginView;
-
     public TextField txtUsuario;
     public PasswordField txtSenha;
     public Button btnEntrar;
+    public Label lblRecuperaSenha;
+    public Label lblCadastro;
 
-    @Setter
+    private LoginView loginView;
     public Stage currentStage;
 
     @Override
@@ -42,6 +35,24 @@ public class LoginController implements Initializable {
                 throw new RuntimeException(ex);
             }
         });
+
+        lblCadastro.setOnMouseClicked(e -> {
+            try {
+                loginView.registerWindow();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        lblRecuperaSenha.setOnMouseClicked(e -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Recuperação de senha");
+            alert.setHeaderText(null);
+            alert.setContentText("Se você esqueceu sua senha, envie um e-mail para leonhardsen4@gmail.com e faça a solicitação. Uma senha provisória será enviada, que você poderá alterar mais tarde.");
+            alert.getButtonTypes().setAll(ButtonType.OK);
+            alert.showAndWait();
+        });
+
     }
 
     public void efetuarLogin() throws IOException {
@@ -69,4 +80,11 @@ public class LoginController implements Initializable {
         currentStage.close();
     }
 
+    public void setLoginView(LoginView loginView) {
+        this.loginView = loginView;
+    }
+
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
 }

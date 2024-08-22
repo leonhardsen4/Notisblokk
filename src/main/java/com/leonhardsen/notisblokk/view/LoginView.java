@@ -24,23 +24,58 @@ public class LoginView extends Application {
     public static ListAudiencesController listAudiencesController;
     public TagController tagController;
     public NoteController noteController;
+    public StatusController statusController;
+    public RegisterController registerController;
+    public ChangePasswordController changePasswordController;
+    public Stage loginStage;
     public Stage jusNoteStage;
     public Stage mainStage;
     public Stage tagStage;
     public Stage noteStage;
+    public Stage statusStage;
+    public Stage registerStage;
+    public Stage changePasswordStage;
 
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage loginStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 300, 300);
+        Scene scene = new Scene(fxmlLoader.load(), 350, 350);
         loginController = fxmlLoader.getController();
         loginController.setLoginView(this);
-        loginController.setCurrentStage(stage);
-        stage.setTitle("Login");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
+        loginController.setCurrentStage(loginStage);
+        loginStage.setTitle("Login");
+        loginStage.setResizable(false);
+        loginStage.setScene(scene);
+        loginStage.show();
+    }
+
+    public void registerWindow() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Register.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 350, 220);
+        registerController = fxmlLoader.getController();
+        registerStage = new Stage();
+        registerController.setCurrentStage(registerStage);
+        registerStage.initOwner(loginStage);
+        registerStage.initModality(Modality.APPLICATION_MODAL);
+        registerStage.setResizable(false);
+        registerStage.setTitle("Cadastro");
+        registerStage.setScene(scene);
+        registerStage.show();
+    }
+
+    public void ChangePasswordWindow() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("ChangePassword.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 350, 160);
+        changePasswordController = fxmlLoader.getController();
+        changePasswordStage = new Stage();
+        changePasswordController.setCurrentStage(changePasswordStage);
+        changePasswordStage.initOwner(mainStage);
+        changePasswordStage.initModality(Modality.APPLICATION_MODAL);
+        changePasswordStage.setResizable(false);
+        changePasswordStage.setTitle("Alterar Senha");
+        changePasswordStage.setScene(scene);
+        changePasswordStage.show();
     }
 
     public void openJusNote(Users user) throws IOException {
@@ -60,6 +95,10 @@ public class LoginView extends Application {
 
     public static void openMainScreen(){
         setPane("MainScreen.fxml", "mainScreenController","#rootPane");
+    }
+
+    public static void openKontakterScreen(){
+        setPane("ContactScreen.fxml", "ContactScreenController","#rootPane");
     }
 
     public static void openListAudiences(){
@@ -82,19 +121,33 @@ public class LoginView extends Application {
     }
 
     public void openNoteView(Tags tag, Notes note, String status) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("NoteScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 400);
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("NoteScreenHTMLEditor.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
         noteController = fxmlLoader.getController();
         noteStage = new Stage();
         noteController.setCurrentStage(noteStage);
         noteController.setData(tag, note, status);
         noteStage.initOwner(mainStage);
         noteStage.initModality(Modality.APPLICATION_MODAL);
-        noteStage.setMinWidth(400);
-        noteStage.setMinHeight(400);
+        noteStage.setMinWidth(660);
+        noteStage.setMinHeight(500);
         noteStage.setTitle("Note");
         noteStage.setScene(scene);
         noteStage.show();
+    }
+
+    public void openStatusView() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Status.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 400, 442);
+        statusController = fxmlLoader.getController();
+        statusStage = new Stage();
+        statusController.setCurrentStage();
+        statusStage.initOwner(mainStage);
+        statusStage.initModality(Modality.APPLICATION_MODAL);
+        statusStage.setResizable(false);
+        statusStage.setTitle("Status");
+        statusStage.setScene(scene);
+        statusStage.show();
     }
 
     private static void setPane(String fxmlPath, String controllerName, String anchor) {
@@ -123,7 +176,5 @@ public class LoginView extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
 }
+

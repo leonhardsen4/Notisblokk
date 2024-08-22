@@ -2,7 +2,6 @@ package com.leonhardsen.notisblokk.controller;
 
 import com.leonhardsen.notisblokk.dao.TagsDAO;
 import com.leonhardsen.notisblokk.model.Tags;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -10,20 +9,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import lombok.Setter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TagController implements Initializable {
 
-    @FXML public TextField txtTag;
-    @FXML public Button btnSave;
-    @FXML public ImageView imgSave;
-    @FXML public Button btnDelete;
-    @FXML public ImageView imgDelete;
+    public TextField txtTag;
+    public Button btnSave;
+    public ImageView imgSave;
+    public Button btnDelete;
+    public ImageView imgDelete;
 
-    @Setter
     private Stage currentStage;
 
     private Tags tagItem;
@@ -94,4 +91,7 @@ public class TagController implements Initializable {
         currentStage.close();
     }
 
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
 }

@@ -109,7 +109,25 @@ public class UsersDAO extends GenericDAO<Users> {
             ex.fillInStackTrace();
             ex.getCause();
             throw new RuntimeException(ex.getMessage());
+        } finally {
+            closeConnection(conn, pstmt, rs);
         }
         return usuario;
     }
+
+    public Boolean findUsername(String usr) {
+        try {
+            sql = "SELECT * FROM USUARIOS WHERE USUARIO LIKE '" + usr + "'";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException ex) {
+            ex.fillInStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        } finally {
+            closeConnection(conn, pstmt, rs);
+        }
+    }
+
 }
