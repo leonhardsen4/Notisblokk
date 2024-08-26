@@ -51,7 +51,7 @@ public class NoteController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        cmbStatus.setItems(MainScreenController.instance.listaStatus());
+        cmbStatus.setItems(NotisblokkController.instance.listaStatus());
         cmbStatus.getSelectionModel().selectFirst();
 
         btnDelete.setOnMouseClicked(e -> deletaNota());
@@ -113,10 +113,10 @@ public class NoteController implements Initializable {
     }
 
     public void fecharJanela() {
-        MainScreenController.instance.populaLista();
-        MainScreenController.instance.populaTabela();
-        MainScreenController.instance.listaStatus();
-        MainScreenController.instance.noteItem = null;
+        NotisblokkController.instance.populaLista();
+        NotisblokkController.instance.populaTabela();
+        NotisblokkController.instance.listaStatus();
+        NotisblokkController.instance.noteItem = null;
         currentStage.close();
     }
 

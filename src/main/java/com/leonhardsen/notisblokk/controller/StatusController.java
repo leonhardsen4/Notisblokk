@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ public class StatusController implements Initializable {
 
     public Status statusItem;
     public ObservableList<Status> statusList;
+    public Stage currentStage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -137,11 +139,11 @@ public class StatusController implements Initializable {
     private void atualizar(){
         limparCampos();
         popularTabela();
-        MainScreenController.instance.populaTabela();
-        MainScreenController.instance.cmbFiltro.setItems(MainScreenController.instance.listaStatus());
+        NotisblokkController.instance.populaTabela();
+        NotisblokkController.instance.cmbFiltro.setItems(NotisblokkController.instance.listaStatus());
     }
 
-    public void setCurrentStage() {
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
     }
-
 }

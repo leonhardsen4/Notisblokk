@@ -5,6 +5,8 @@ import com.leonhardsen.notisblokk.model.Users;
 import com.leonhardsen.notisblokk.utils.Crypthograph;
 import com.leonhardsen.notisblokk.utils.Database;
 import com.leonhardsen.notisblokk.view.LoginView;
+import com.leonhardsen.notisblokk.view.MainView;
+import com.leonhardsen.notisblokk.view.RegisterView;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -38,7 +40,7 @@ public class LoginController implements Initializable {
 
         lblCadastro.setOnMouseClicked(e -> {
             try {
-                loginView.registerWindow();
+                RegisterView.openWindow(currentStage);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -61,7 +63,7 @@ public class LoginController implements Initializable {
         UsersDAO usersDAO = new UsersDAO();
         Users usr = usersDAO.find(usuario, senha);
         if (usr != null){
-            loginView.openJusNote(usr);
+            MainView.openView(usr);
             fecharLogin();
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

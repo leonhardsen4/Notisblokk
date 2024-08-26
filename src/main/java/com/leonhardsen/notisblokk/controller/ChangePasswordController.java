@@ -29,7 +29,7 @@ public class ChangePasswordController implements Initializable {
         btnSave.setOnMouseClicked(e -> {
             if(verificaSenha(txtSenha.getText())){
                 UsersDAO usersDAO = new UsersDAO();
-                user = JusNoteController.instance.usr;
+                user = MainScreenController.instance.usr;
                 user.setId(user.getId());
                 user.setUser(user.getUser());
                 user.setPassword(Crypthograph.SHA256(txtSenha.getText()));

@@ -84,10 +84,10 @@ public class TagController implements Initializable {
     }
 
     public void fecharJanela() {
-        MainScreenController.instance.populaLista();
-        MainScreenController.instance.populaTabela();
-        MainScreenController.instance.tagItem = null;
-        MainScreenController.instance.noteItem = null;
+        NotisblokkController.instance.populaLista();
+        NotisblokkController.instance.populaTabela();
+        NotisblokkController.instance.tagItem = null;
+        NotisblokkController.instance.noteItem = null;
         currentStage.close();
     }
 

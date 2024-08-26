@@ -1,218 +1,135 @@
 package com.leonhardsen.notisblokk.controller;
 
-import com.leonhardsen.notisblokk.dao.NotesDAO;
-import com.leonhardsen.notisblokk.dao.StatusDAO;
-import com.leonhardsen.notisblokk.dao.TagsDAO;
-import com.leonhardsen.notisblokk.model.Notes;
-import com.leonhardsen.notisblokk.model.Status;
-import com.leonhardsen.notisblokk.model.Tags;
-import com.leonhardsen.notisblokk.view.LoginView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.leonhardsen.notisblokk.model.Users;
+import com.leonhardsen.notisblokk.view.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
 
-    public AnchorPane rootPane;
-    public TextField txtPesquisa;
-    public Button btnTag;
-    public Button btnNote;
-    public ListView<Tags> listTag;
-    public TableView<Notes> tblNote;
-    public TableColumn<Notes, Integer> colID;
-    public TableColumn<Notes, String> colData;
-    public TableColumn<Notes, String> colTitulo;
-    public TableColumn<Notes, String> colStatus;
-    public ImageView imgPlus;
-    public TextField txtPesquisaNotas;
-    public ComboBox<String> cmbFiltro;
+    public AnchorPane mainPane;
+    public AnchorPane drawerPane;
+    public AnchorPane statusBar;
+    public Label lblDataHora;
+    public Label lblUsuario;
+    public Label lblNotisblokk;
+    public Label lblKontakter;
+    public Label lblAudiences;
+    public ImageView imgBurger;
+    public Stage currentStage;
+    public Users usr;
 
-    public LoginView loginView;
-    public Tags tagItem;
-    public Notes noteItem;
-    public String statusItem;
+    boolean isOpen;
     public static MainScreenController instance;
-    public ObservableList<Notes> notesList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         instance = this;
 
-        notesList = FXCollections.observableArrayList();
+        Timeline clock = getClock();
+        clock.play();
 
-        txtPesquisa.textProperty().addListener((value, oldValue, newValue) -> {
+        lblUsuario.setOnMouseClicked(e -> {
             try {
-                TagsDAO tagsDAO = new TagsDAO();
-                listTag.setItems(tagsDAO.search(newValue));
-            } catch (Exception e) {
-                e.fillInStackTrace();
-                e.getCause();
-                throw new RuntimeException(e.getMessage());
-            }
-        });
-
-
-        btnTag.setOnMouseClicked(e -> {
-            try {
-                loginView = new LoginView();
-                loginView.openTagView(null);
-            } catch (Exception ex) {
+                ChangePasswordView.ChangePasswordWindow(currentStage);
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
-        if (tagItem == null) {
-            btnNote.setDisable(true);
-        }
+        lblNotisblokk.setOnMouseClicked(e -> {
+            NotisblokkView.openView(mainPane);
+            closeSideMenu();
+        });
 
-        btnNote.setOnMouseClicked(e -> {
-            try {
-                if (tagItem != null) {
-                    loginView = new LoginView();
-                    loginView.openNoteView(tagItem, null, null);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Tag não selecionada");
-                    alert.setHeaderText("Selecione uma Tag antes de criar uma nova nota.");
-                    alert.showAndWait().ifPresent(response -> {
-                        if (response == ButtonType.OK) {
-                            txtPesquisa.requestFocus();
-                        }
-                    });
-                }
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
+        lblKontakter.setOnMouseClicked(e-> {
+            KontakterView.openView(mainPane);
+            closeSideMenu();
+        });
+
+        lblAudiences.setOnMouseClicked(e -> {
+            //TODO
+            closeSideMenu();
+        });
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
+        translateTransition.setToX(-180);
+        translateTransition.play();
+        isOpen = false;
+
+        imgBurger.setOnMouseClicked(e -> {
+            if (isOpen) {
+                closeSideMenu();
+            } else {
+                openSideMenu();
             }
         });
 
-        listTag.getSelectionModel().selectFirst();
-
-        listTag.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1) {
-                tagItem = listTag.getSelectionModel().getSelectedItem();
-                btnNote.setDisable(false);
-                populaTabela();
-            } else if (event.getClickCount() == 2) {
-                try {
-                    tagItem = listTag.getSelectionModel().getSelectedItem();
-                    loginView = new LoginView();
-                    loginView.openTagView(tagItem);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+        mainPane.setOnMouseClicked(e -> {
+            if (isOpen) {
+                closeSideMenu();
             }
         });
 
-        populaLista();
-
-        statusColor();
-
-        cmbFiltro.setItems(listaStatus());
-        cmbFiltro.getSelectionModel().selectFirst();
-        cmbFiltro.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> populaTabela());
-        txtPesquisaNotas.textProperty().addListener((a, b, c) -> populaTabela());
-
-        cmbFiltro.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                try {
-                    loginView = new LoginView();
-                    loginView.openStatusView();
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-
-        tblNote.setRowFactory(e -> {
-            TableRow<Notes> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    noteItem = row.getItem();
-                    TagsDAO tagsDAO = new TagsDAO();
-                    tagItem = tagsDAO.findID(noteItem.getId_tag());
-                    statusItem = noteItem.getStatus();
-                    loginView = new LoginView();
-                    try {
-                        loginView.openNoteView(tagItem, noteItem, statusItem);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            });
-            return row;
-        });
-
     }
 
-    public ObservableList<String> listaStatus(){
-        StatusDAO statusDAO = new StatusDAO();
-        ObservableList<Status> listaStatus = statusDAO.getAll();
-        List<String> lista = new ArrayList<>();
-        lista.add("MOSTRAR TODOS");
-        for (Status status : listaStatus) {
-            lista.add(status.getStatus());
-        }
-        return FXCollections.observableArrayList(lista);
+    @NotNull
+    private Timeline getClock() {
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            LocalDateTime now = LocalDateTime.now();
+            String diaDaSemana = now.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("pt-br")).toUpperCase();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String dataHoraAtual = diaDaSemana + ", " + now.format(formatter);
+            lblDataHora.setText(dataHoraAtual);
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        return clock;
     }
 
-    public void populaLista() {
-        TagsDAO tagsDAO =  new TagsDAO();
-        listTag.setItems(tagsDAO.getAll());
+    public void openSideMenu() {
+        drawerPane.toFront();
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
+        translateTransition.setToX(0);
+        translateTransition.play();
+        isOpen = true;
+        mainPane.setDisable(true);
     }
 
-    public void populaTabela() {
-        colID.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colData.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        tblNote.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-        if (tagItem != null) {
-            NotesDAO notesDAO = new NotesDAO();
-            String filtroStatus = cmbFiltro.getSelectionModel().getSelectedItem();
-            String filtroTitulo = txtPesquisaNotas.getText();
-            notesList.setAll(notesDAO.getAll(tagItem.getId(), filtroStatus, filtroTitulo));
-            tblNote.setItems(notesList);
-        }
+    public void closeSideMenu() {
+        drawerPane.toFront();
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
+        translateTransition.setToX(-180);
+        translateTransition.play();
+        isOpen = false;
+        mainPane.setDisable(false);
     }
 
-    private void statusColor() {
-        colStatus.setCellFactory(e -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setGraphic(null);
-                    setText(null);
-                } else {
-                    StatusDAO statusDAO = new StatusDAO();
-                    Status status = statusDAO.findByStatus(item);
-
-                    if (status != null) {
-                        Rectangle colorSquare = new Rectangle(20, 20);
-                        colorSquare.setFill(Color.web(status.getCor()));
-                        HBox hbox = new HBox(5, colorSquare, new Label(item));
-                        setGraphic(hbox);
-                    } else {
-                        setGraphic(null);
-                        setText(item);
-                    }
-                }
-            }
-        });
+    public void setUser(Users user){
+        usr = user;
+        lblUsuario.setText("USUÁRIO: " + usr.getUser());
     }
 
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
 }
