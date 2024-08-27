@@ -56,13 +56,14 @@ public class TagController implements Initializable {
             if (tagItem == null) {
                 tag.setTag(txtTag.getText());
                 tagsDAO.save(tag);
+                atualizar();
             } else {
                 tag.setId(tagItem.getId());
                 tag.setTag(txtTag.getText());
                 tagsDAO.update(tag);
+                atualizar();
             }
         }
-        fecharJanela();
     }
 
     private void deletaTag() {
@@ -72,7 +73,7 @@ public class TagController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Exclusão");
             alert.setHeaderText("Tem certeza que deseja excluir a tag selecionada?");
-            alert.setContentText("Tag: " + tagItem.getTag());
+            alert.setContentText("Esta operação irá apagar também todas as notas relacionadas à tag " + tagItem.getTag() + ".");
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     TagsDAO tagsDAO = new TagsDAO();
@@ -83,11 +84,15 @@ public class TagController implements Initializable {
         }
     }
 
-    public void fecharJanela() {
+    public void atualizar(){
         NotisblokkController.instance.populaLista();
         NotisblokkController.instance.populaTabela();
         NotisblokkController.instance.tagItem = null;
         NotisblokkController.instance.noteItem = null;
+    }
+
+    public void fecharJanela() {
+        atualizar();
         currentStage.close();
     }
 

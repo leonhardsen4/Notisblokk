@@ -6,7 +6,6 @@ import com.leonhardsen.notisblokk.dao.TagsDAO;
 import com.leonhardsen.notisblokk.model.Notes;
 import com.leonhardsen.notisblokk.model.Status;
 import com.leonhardsen.notisblokk.model.Tags;
-import com.leonhardsen.notisblokk.view.LoginView;
 import com.leonhardsen.notisblokk.view.NoteView;
 import com.leonhardsen.notisblokk.view.StatusView;
 import com.leonhardsen.notisblokk.view.TagView;
@@ -44,7 +43,6 @@ public class NotisblokkController implements Initializable {
     public TextField txtPesquisaNotas;
     public ComboBox<String> cmbFiltro;
 
-    public LoginView loginView;
     public Tags tagItem;
     public Notes noteItem;
     public String statusItem;
@@ -147,7 +145,6 @@ public class NotisblokkController implements Initializable {
                     TagsDAO tagsDAO = new TagsDAO();
                     tagItem = tagsDAO.findID(noteItem.getId_tag());
                     statusItem = noteItem.getStatus();
-                    loginView = new LoginView();
                     try {
                         NoteView.openView(tagItem, noteItem, statusItem, currentStage);
                     } catch (IOException ex) {

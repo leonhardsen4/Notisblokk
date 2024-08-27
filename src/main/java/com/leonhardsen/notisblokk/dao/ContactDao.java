@@ -1,7 +1,6 @@
 package com.leonhardsen.notisblokk.dao;
 
 import com.leonhardsen.notisblokk.model.Contact;
-import com.leonhardsen.notisblokk.model.Users;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -10,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDao extends GenericDAO<Contact> {
+
+    public ContactDao() {
+        this.conn = getConnection();
+    }
 
     @Override
     public void save(Contact contact) {
@@ -39,7 +42,7 @@ public class ContactDao extends GenericDAO<Contact> {
                     "TELEFONE = ?, " +
                     "EMAIL = ?, " +
                     "ENDERECO = ?, " +
-                    "OBSERVACAO = ? " +
+                    "OBSERVACOES = ? " +
                     "WHERE ID = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, contact.getNome());
@@ -82,7 +85,7 @@ public class ContactDao extends GenericDAO<Contact> {
     public ObservableList<Contact> getAll(String string) {
         List<Contact> listContacts = new ArrayList<>();
         try {
-            if (string == null || string.isEmpty()) {
+            if (string == null || string.isEmpty() || string.isBlank()) {
                 sql = "SELECT * FROM CONTATOS ORDER BY NOME";
             } else {
                 sql = "SELECT * FROM CONTATOS WHERE NOME LIKE '%" + string + "%' " +
@@ -100,7 +103,7 @@ public class ContactDao extends GenericDAO<Contact> {
                 contact.setTelefone(rs.getString("TELEFONE"));
                 contact.setEmail(rs.getString("EMAIL"));
                 contact.setEndereco(rs.getString("ENDERECO"));
-                contact.setObservacoes(rs.getString("OBSERVACAO"));
+                contact.setObservacoes(rs.getString("OBSERVACOES"));
                 listContacts.add(contact);
             }
             return FXCollections.observableArrayList(listContacts);
@@ -115,7 +118,7 @@ public class ContactDao extends GenericDAO<Contact> {
 
         public Boolean findContact(String string) {
             try {
-                sql = "SELECT * FROM CONTACT WHERE NOME LIKE '" + string + "'";
+                sql = "SELECT * FROM CONTATOS WHERE NOME LIKE '" + string + "'";
                 pstmt = conn.prepareStatement(sql);
                 rs = pstmt.executeQuery();
                 return rs.next();

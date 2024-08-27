@@ -21,6 +21,11 @@
          <Font size="15.0" />
       </font>
    </TextField>
+   <PasswordField fx:id="txtSenha" layoutX="20.0" layoutY="121.0" prefHeight="31.0" prefWidth="360.0" promptText="Senha" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </PasswordField>
    <Button fx:id="btnSave" layoutX="345.0" layoutY="215.0" mnemonicParsing="false" style="-fx-background-color: #4682B4;" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
       <font>
          <Font size="15.0" />
@@ -34,9 +39,4 @@
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
-   <PasswordField fx:id="txtSenha" layoutX="20.0" layoutY="121.0" prefHeight="31.0" prefWidth="360.0" promptText="Senha" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0">
-      <font>
-         <Font size="15.0" />
-      </font>
-   </PasswordField>
 </AnchorPane>

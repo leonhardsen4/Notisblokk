@@ -20,6 +20,4 @@ module com.leonhardsen.notisblokk {
     opens com.leonhardsen.notisblokk.utils to javafx.fxml;
     exports com.leonhardsen.notisblokk.utils;
 
-
-
 }

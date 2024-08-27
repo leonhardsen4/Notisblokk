@@ -2,16 +2,17 @@ package com.leonhardsen.notisblokk.controller;
 
 import com.leonhardsen.notisblokk.dao.ContactDao;
 import com.leonhardsen.notisblokk.model.Contact;
+import com.leonhardsen.notisblokk.view.ContactView;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -30,25 +31,51 @@ public class KontakterController implements Initializable {
     public TableColumn<Contact, String> colObservacoes;
     
     public static KontakterController instance;
-    public ContactDao contactDao;
     public ObservableList<Contact> contactList;
+    public Stage currentStage;
+    public Contact contactItem;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         
         instance = this;
 
+        contactList = FXCollections.observableArrayList();
+
+        populaTabela();
+
         txtPesquisa.textProperty().addListener((a, b, c) -> populaTabela());
 
-        btnNovoContato.setOnMouseClicked(e -> novoContato());
+        btnNovoContato.setOnMouseClicked(e -> {
+            try {
+                novoContato();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        tblContatos.setRowFactory(e -> {
+            TableRow<Contact> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    contactItem = row.getItem();
+                    try {
+                        ContactView.openView(contactItem, currentStage);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
+            return row;
+        });
 
     }
 
-    private void novoContato() {
-        //TODO
+    private void novoContato() throws IOException {
+        ContactView.openView(null, currentStage);
     }
 
-    private void populaTabela() {
+    public void populaTabela() {
         colID.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
@@ -56,9 +83,13 @@ public class KontakterController implements Initializable {
         colEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
         colObservacoes.setCellValueFactory(new PropertyValueFactory<>("observacoes"));
         tblContatos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-        String filtroPesquisa = txtPesquisa.getText();
-        contactDao = new ContactDao();
-        contactList.setAll(contactDao.getAll(filtroPesquisa));
+        ContactDao contactDao = new ContactDao();
+        contactList.setAll(contactDao.getAll(txtPesquisa.getText()));
         tblContatos.setItems(contactList);
     }
+
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
+
 }
