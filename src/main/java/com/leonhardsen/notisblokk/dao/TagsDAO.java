@@ -152,4 +152,5 @@ public class TagsDAO extends GenericDAO<Tags> {
             closeConnection(conn, pstmt, rs);
         }
     }
+
 }

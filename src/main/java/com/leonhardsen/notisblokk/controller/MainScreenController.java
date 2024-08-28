@@ -31,10 +31,11 @@ public class MainScreenController implements Initializable {
     public Label lblUsuario;
     public Label lblNotisblokk;
     public Label lblKontakter;
-    public Label lblAudiences;
+    public Label lblSkecth;
     public ImageView imgBurger;
     public Stage currentStage;
     public Users usr;
+
 
     boolean isOpen;
     public static MainScreenController instance;
@@ -65,8 +66,8 @@ public class MainScreenController implements Initializable {
             closeSideMenu();
         });
 
-        lblAudiences.setOnMouseClicked(e -> {
-            //TODO
+        lblSkecth.setOnMouseClicked(e -> {
+            SkecthView.openView(mainPane);
             closeSideMenu();
         });
 
