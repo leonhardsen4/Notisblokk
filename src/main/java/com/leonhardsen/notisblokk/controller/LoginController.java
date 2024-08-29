@@ -23,7 +23,7 @@ public class LoginController implements Initializable {
     public Label lblRecuperaSenha;
     public Label lblCadastro;
 
-    private LoginView loginView;
+    public LoginView loginView;
     public Stage currentStage;
 
     @Override
