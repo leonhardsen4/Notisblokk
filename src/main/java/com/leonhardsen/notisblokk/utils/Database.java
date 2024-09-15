@@ -68,6 +68,11 @@ public class Database {
                         observacoes TEXT
                     );
                   """;
+            String insertRascunhos = """
+                    INSERT INTO RASCUNHOS (rascunho)
+                    SELECT 'Escreva algo aqui.'
+                    WHERE NOT EXISTS (SELECT 1 FROM RASCUNHOS);
+                """;
             stmt.execute(tabelaUsuarios);
             System.out.println("Tabela USUARIOS criada com sucesso.");
             stmt.execute(tabelaTags);
@@ -80,6 +85,7 @@ public class Database {
             System.out.println("Tabela RASCUNHOS criada com sucesso.");
             stmt.execute(tabelaContatos);
             System.out.println("Tabela CONTATOS criada com sucesso.");
+            stmt.execute(insertRascunhos);
             stmt.close();
         } catch (SQLException e) {
             e.fillInStackTrace();

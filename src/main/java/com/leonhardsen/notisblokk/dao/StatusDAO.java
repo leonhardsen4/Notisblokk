@@ -94,7 +94,7 @@ public class StatusDAO extends GenericDAO<Status> {
 
     public Status findByStatus(String statusName) {
         try {
-            String sql = "SELECT * FROM status WHERE status = ?";
+            String sql = "SELECT * FROM STATUS WHERE STATUS = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, statusName);
             rs = pstmt.executeQuery();
@@ -111,6 +111,21 @@ public class StatusDAO extends GenericDAO<Status> {
             closeConnection(conn, pstmt, rs);
         }
         return null;
+    }
+
+    public Boolean findStatus(String status, String cor) {
+        try {
+            sql = "SELECT * FROM STATUS WHERE STATUS LIKE '" + status + "' OR COR LIKE '" + cor + "'";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException ex) {
+            ex.fillInStackTrace();
+            ex.getCause();
+            throw new RuntimeException(ex.getMessage());
+        } finally {
+            closeConnection(conn, pstmt, rs);
+        }
     }
 
 }

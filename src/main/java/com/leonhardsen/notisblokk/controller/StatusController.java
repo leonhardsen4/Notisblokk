@@ -38,7 +38,7 @@ public class StatusController implements Initializable {
         popularTabela();
         statusColor();
 
-        btnSave.setOnMouseClicked(e -> salvarStatus());
+        btnSave.setOnMouseClicked(e -> salvaStatus());
 
         btnDelete.setOnMouseClicked(e -> excluirStatus());
 
@@ -58,20 +58,41 @@ public class StatusController implements Initializable {
 
     }
 
-    private void salvarStatus() {
-        StatusDAO statusDAO = new StatusDAO();
-        if (statusItem == null) {
-            Status novoStatus = new Status();
-            novoStatus.setStatus(txtStatus.getText().toUpperCase());
-            novoStatus.setCor(colorPicker.getValue().toString());
-            statusDAO.save(novoStatus);
+    private void salvaStatus() {
+        if (txtStatus.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Campo vazio");
+            alert.setHeaderText("Escreva o nome do status para salvar.");
+            alert.showAndWait();
+            txtStatus.requestFocus();
         } else {
-            statusItem.setStatus(txtStatus.getText().toUpperCase());
-            statusItem.setCor(colorPicker.getValue().toString());
-            statusDAO.update(statusItem);
-            statusItem = null;
+            StatusDAO statusDAO;
+            if (statusItem == null) {
+                statusDAO = new StatusDAO();
+                if (statusDAO.findStatus(txtStatus.getText(), colorPicker.getValue().toString())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Satstus ou Cor Já Cadastrado");
+                    alert.setHeaderText("Esta status ou cor já foi cadastrado. Faça uma busca para encontrá-lo, ou cadastre outro status.");
+                    alert.showAndWait();
+                    txtStatus.setText("");
+                    txtStatus.requestFocus();
+                    colorPicker.setValue(null);
+                } else {
+                    statusDAO = new StatusDAO();
+                    Status status = new Status();
+                    status.setStatus(txtStatus.getText().toUpperCase());
+                    status.setCor(colorPicker.getValue().toString());
+                    statusDAO.save(status);
+                    atualizar();
+                }
+            } else {
+                statusDAO = new StatusDAO();
+                statusItem.setStatus(txtStatus.getText().toUpperCase());
+                statusItem.setCor(colorPicker.getValue().toString());
+                statusDAO.update(statusItem);
+                atualizar();
+            }
         }
-        atualizar();
     }
 
     private void excluirStatus() {
@@ -141,6 +162,7 @@ public class StatusController implements Initializable {
         popularTabela();
         NotisblokkController.instance.populaTabela();
         NotisblokkController.instance.cmbFiltro.setItems(NotisblokkController.instance.listaStatus());
+        currentStage.close();
     }
 
     public void setCurrentStage(Stage currentStage) {

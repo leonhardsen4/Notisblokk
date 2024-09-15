@@ -22,7 +22,6 @@ public class TagController implements Initializable {
     public ImageView imgDelete;
 
     private Stage currentStage;
-
     private Tags tagItem;
 
     public void setTagItem(Tags tagItem) {
@@ -41,27 +40,35 @@ public class TagController implements Initializable {
     }
 
     private void salvaTag() {
-        if (txtTag.getText().isEmpty() || txtTag.getText().isBlank()){
+        if (txtTag.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Campo vazio");
             alert.setHeaderText("Escreva o nome da tag para salvar.");
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    txtTag.requestFocus();
-                }
-            });
+            alert.showAndWait();
+            txtTag.requestFocus();
         } else {
-            TagsDAO tagsDAO = new TagsDAO();
-            Tags tag = new Tags();
+            TagsDAO tagsDAO;
             if (tagItem == null) {
-                tag.setTag(txtTag.getText());
-                tagsDAO.save(tag);
-                atualizar();
+                 tagsDAO = new TagsDAO();
+                if (tagsDAO.findTag(txtTag.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Tag Já Cadastrada");
+                    alert.setHeaderText("Esta tag já foi cadastrada. Faça uma busca para encontrá-la, ou cadastre outra tag.");
+                    alert.showAndWait();
+                    txtTag.setText("");
+                    txtTag.requestFocus();
+                } else {
+                    tagsDAO = new TagsDAO();
+                    Tags tag = new Tags();
+                    tag.setTag(txtTag.getText());
+                    tagsDAO.save(tag);
+                    fecharJanela();
+                }
             } else {
-                tag.setId(tagItem.getId());
-                tag.setTag(txtTag.getText());
-                tagsDAO.update(tag);
-                atualizar();
+                tagsDAO = new TagsDAO();
+                tagItem.setTag(txtTag.getText());
+                tagsDAO.update(tagItem);
+                fecharJanela();
             }
         }
     }

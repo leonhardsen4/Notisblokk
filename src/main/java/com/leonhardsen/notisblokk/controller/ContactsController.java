@@ -28,47 +28,50 @@ public class ContactsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         btnDelete.setOnMouseClicked(event -> apagaContato());
+
         btnSave.setOnMouseClicked(event -> salvaContato());
+
     }
 
     private void salvaContato() {
-        contactDao = new ContactDao();
-        if (contactDao.findContact(txtNome.getText())){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Contato Já Cadastrado");
-            alert.setHeaderText("Este contato já foi cadastrado. Faça uma busca para encontrá-lo, ou cadastre outro contato.");
-            alert.showAndWait();
-            txtNome.setText("");
-            txtNome.requestFocus();
-        } else if (txtNome.getText().isEmpty() || txtNome.getText().isBlank()) {
+        if (txtNome.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Campo vazio");
             alert.setHeaderText("Escreva o nome do contato para salvar.");
             alert.showAndWait();
             txtNome.requestFocus();
         } else {
-            contactDao = new ContactDao();
-            Contact contact = new Contact();
             if (contactItem == null) {
-                contact.setNome(txtNome.getText());
-                contact.setTelefone(txtTelefone.getText());
-                contact.setEmail(txtEmail.getText());
-                contact.setEndereco(txtEndereco.getText());
-                contact.setObservacoes(txtObservacoes.getText());
-                contactDao.save(contact);
-                atualizar();
+                contactDao = new ContactDao();
+                if (contactDao.findContact(txtNome.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Contato Já Cadastrado");
+                    alert.setHeaderText("Este contato já foi cadastrado. Faça uma busca para encontrá-lo, ou cadastre outro contato.");
+                    alert.showAndWait();
+                    txtNome.setText("");
+                    txtNome.requestFocus();
+                } else {
+                    contactDao = new ContactDao();
+                    contactDao.save(setContact(new Contact()));
+                    fecharJanela();
+                }
             } else {
-                contact.setId(contactItem.getId());
-                contact.setNome(txtNome.getText());
-                contact.setTelefone(txtTelefone.getText());
-                contact.setEmail(txtEmail.getText());
-                contact.setEndereco(txtEndereco.getText());
-                contact.setObservacoes(txtObservacoes.getText());
-                contactDao.update(contact);
-                atualizar();
+                contactDao = new ContactDao();
+                contactDao.update(setContact(contactItem));
+                fecharJanela();
             }
         }
+    }
+
+    public Contact setContact (Contact contact) {
+        contact.setNome(txtNome.getText());
+        contact.setTelefone(txtTelefone.getText());
+        contact.setEmail(txtEmail.getText());
+        contact.setEndereco(txtEndereco.getText());
+        contact.setObservacoes(txtObservacoes.getText());
+        return contact;
     }
 
     private void apagaContato() {
@@ -81,7 +84,7 @@ public class ContactsController implements Initializable {
             alert.setContentText("Contato: " + contactItem.getNome());
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    contactDao = new ContactDao();
+                    ContactDao contactDao = new ContactDao();
                     contactDao.delete(contactItem);
                     fecharJanela();
                 }
@@ -109,6 +112,15 @@ public class ContactsController implements Initializable {
     public void atualizar(){
         KontakterController.instance.populaTabela();
         KontakterController.instance.contactItem = null;
+        limparCampos();
+    }
+
+    public void limparCampos(){
+        txtNome.setText("");
+        txtTelefone.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        txtObservacoes.setText("");
     }
 
     public void fecharJanela() {

@@ -109,7 +109,7 @@ public class NoteController implements Initializable {
                 note.setRelato(htmlBytes);
                 note.setStatus(cmbStatus.getSelectionModel().getSelectedItem());
                 notesDAO.save(note);
-                atualizar();
+                fecharJanela();
             } else {
                 noteItem.setData(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 noteItem.setTitulo(txtTitulo.getText());
@@ -118,7 +118,7 @@ public class NoteController implements Initializable {
                 noteItem.setRelato(htmlBytes);
                 noteItem.setStatus(cmbStatus.getSelectionModel().getSelectedItem());
                 notesDAO.update(noteItem);
-                atualizar();
+                fecharJanela();
             }
         }
     }
