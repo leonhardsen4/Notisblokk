@@ -9,6 +9,7 @@ import com.leonhardsen.notisblokk.view.MainView;
 import com.leonhardsen.notisblokk.view.RegisterView;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,6 +54,16 @@ public class LoginController implements Initializable {
             alert.setContentText("Se você esqueceu sua senha, envie um e-mail para leonhardsen4@gmail.com e faça a solicitação. Uma senha provisória será enviada, que você poderá alterar mais tarde.");
             alert.getButtonTypes().setAll(ButtonType.OK);
             alert.showAndWait();
+        });
+
+        txtSenha.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                try {
+                    efetuarLogin();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
 
     }

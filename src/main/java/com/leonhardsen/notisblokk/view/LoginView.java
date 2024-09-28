@@ -4,9 +4,11 @@ import com.leonhardsen.notisblokk.controller.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginView extends Application{
 
@@ -17,6 +19,7 @@ public class LoginView extends Application{
         LoginController loginController = fxmlLoader.getController();
         loginController.setLoginView(this);
         loginController.setCurrentStage(loginStage);
+        loginStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/leonhardsen/notisblokk/image/puzzle-game.png"))));
         loginStage.setTitle("Login");
         loginStage.setResizable(false);
         loginStage.setScene(scene);

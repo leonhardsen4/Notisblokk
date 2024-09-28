@@ -4,10 +4,12 @@ import com.leonhardsen.notisblokk.controller.ContactsController;
 import com.leonhardsen.notisblokk.model.Contact;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ContactView {
 
@@ -17,6 +19,7 @@ public class ContactView {
         ContactsController contactsController = fxmlLoader.getController();
         Stage contactStage = new Stage();
         contactsController.setCurrentStage(contactStage);
+        contactStage.getIcons().add(new Image(Objects.requireNonNull(ContactView.class.getResourceAsStream("/com/leonhardsen/notisblokk/image/puzzle-game.png"))));
         contactsController.setContactItem(contact);
         contactStage.initOwner(parentStage);
         contactStage.initModality(Modality.APPLICATION_MODAL);

@@ -4,9 +4,11 @@ import com.leonhardsen.notisblokk.controller.MainScreenController;
 import com.leonhardsen.notisblokk.model.Users;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainView {
 
@@ -16,8 +18,9 @@ public class MainView {
         MainScreenController mainScreenController = fxmlLoader.getController();
         Stage mainStage = new Stage();
         mainScreenController.setCurrentStage(mainStage);
+        mainStage.getIcons().add(new Image(Objects.requireNonNull(MainView.class.getResourceAsStream("/com/leonhardsen/notisblokk/image/puzzle-game.png"))));
         mainScreenController.setUser(user);
-        mainStage.setTitle("JusNote :: Anotações seguras para seus processos");
+        mainStage.setTitle("Notisblokk :: Anotações para tudo");
         mainStage.setMaximized(true);
         mainStage.setMinWidth(600);
         mainStage.setMinHeight(400);

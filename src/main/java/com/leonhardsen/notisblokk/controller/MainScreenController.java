@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,7 @@ import java.util.ResourceBundle;
 public class MainScreenController implements Initializable {
 
     public AnchorPane mainPane;
+    public BorderPane borderPane;
     public AnchorPane drawerPane;
     public AnchorPane statusBar;
     public Label lblDataHora;
@@ -32,7 +34,7 @@ public class MainScreenController implements Initializable {
     public Label lblNotisblokk;
     public Label lblKontakter;
     public Label lblSkecth;
-    public ImageView imgBurger;
+    public ImageView imgLogo;
     public Stage currentStage;
     public Users usr;
 
@@ -48,6 +50,7 @@ public class MainScreenController implements Initializable {
         Timeline clock = getClock();
         clock.play();
 
+
         lblUsuario.setOnMouseClicked(e -> {
             try {
                 ChangePasswordView.ChangePasswordWindow(currentStage);
@@ -58,37 +61,61 @@ public class MainScreenController implements Initializable {
 
         lblNotisblokk.setOnMouseClicked(e -> {
             NotisblokkView.openView(mainPane);
-            closeSideMenu();
+            //closeSideMenu();
         });
 
         lblKontakter.setOnMouseClicked(e-> {
             KontakterView.openView(mainPane);
-            closeSideMenu();
+            //closeSideMenu();
         });
 
         lblSkecth.setOnMouseClicked(e -> {
             SkecthView.openView(mainPane);
-            closeSideMenu();
+            //closeSideMenu();
         });
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
-        translateTransition.setToX(-180);
-        translateTransition.play();
-        isOpen = false;
-
-        imgBurger.setOnMouseClicked(e -> {
-            if (isOpen) {
-                closeSideMenu();
-            } else {
-                openSideMenu();
-            }
+        lblNotisblokk.setOnMouseEntered(event -> {
+            lblNotisblokk.setStyle("-fx-background-color: #4682B4");
         });
 
-        mainPane.setOnMouseClicked(e -> {
-            if (isOpen) {
-                closeSideMenu();
-            }
+        lblNotisblokk.setOnMouseExited(event -> {
+            lblNotisblokk.setStyle("-fx-background-color:  #002d40");
         });
+
+        lblKontakter.setOnMouseEntered(event -> {
+            lblKontakter.setStyle("-fx-background-color: #4682B4");
+        });
+
+        lblKontakter.setOnMouseExited(event -> {
+            lblKontakter.setStyle("-fx-background-color:  #002d40");
+        });
+
+        lblSkecth.setOnMouseEntered(event -> {
+            lblSkecth.setStyle("-fx-background-color: #4682B4");
+        });
+
+        lblSkecth.setOnMouseExited(event -> {
+            lblSkecth.setStyle("-fx-background-color:  #002d40");
+        });
+
+//        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
+//        translateTransition.setToX(-125);
+//        translateTransition.play();
+//        isOpen = false;
+//
+//        imgBurger.setOnMouseClicked(e -> {
+//            if (isOpen) {
+//                closeSideMenu();
+//            } else {
+//                openSideMenu();
+//            }
+//        });
+//
+//        mainPane.setOnMouseClicked(e -> {
+//            if (isOpen) {
+//                closeSideMenu();
+//            }
+//        });
 
     }
 
@@ -107,23 +134,23 @@ public class MainScreenController implements Initializable {
         return clock;
     }
 
-    public void openSideMenu() {
-        drawerPane.toFront();
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
-        translateTransition.setToX(0);
-        translateTransition.play();
-        isOpen = true;
-        mainPane.setDisable(true);
-    }
-
-    public void closeSideMenu() {
-        drawerPane.toFront();
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
-        translateTransition.setToX(-180);
-        translateTransition.play();
-        isOpen = false;
-        mainPane.setDisable(false);
-    }
+//    public void openSideMenu() {
+//        drawerPane.toFront();
+//        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
+//        translateTransition.setToX(0);
+//        translateTransition.play();
+//        isOpen = true;
+//        mainPane.setDisable(true);
+//    }
+//
+//    public void closeSideMenu() {
+//        drawerPane.toFront();
+//        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
+//        translateTransition.setToX(-180);
+//        translateTransition.play();
+//        isOpen = false;
+//        mainPane.setDisable(false);
+//    }
 
     public void setUser(Users user){
         usr = user;

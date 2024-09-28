@@ -35,9 +35,9 @@
          <Font size="15.0" />
       </font>
    </PasswordField>
-   <Button fx:id="btnEntrar" layoutX="40.0" layoutY="230.0" mnemonicParsing="false" onAction="#efetuarLogin" prefHeight="25.0" prefWidth="225.0" style="-fx-background-color: #4682B4;" text="Entrar" textFill="WHITE" AnchorPane.bottomAnchor="89.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+   <Button fx:id="btnEntrar" layoutX="40.0" layoutY="230.0" mnemonicParsing="false" onAction="#efetuarLogin" prefHeight="40.0" prefWidth="270.0" style="-fx-background-color: #4682B4;" text="Entrar" textFill="WHITE" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
       <font>
-         <Font size="15.0" />
+         <Font name="System Bold" size="15.0" />
       </font>
       <cursor>
          <Cursor fx:constant="HAND" />
