@@ -22,10 +22,11 @@ public class MainView {
         mainScreenController.setUser(user);
         mainStage.setTitle("Notisblokk :: Anotações para tudo");
         mainStage.setMaximized(true);
-        mainStage.setMinWidth(600);
-        mainStage.setMinHeight(400);
+        mainStage.setMinWidth(850);
+        mainStage.setMinHeight(600);
         mainStage.setScene(scene);
         mainStage.show();
+        //mainStage.setAlwaysOnTop(true);
     }
 
 }

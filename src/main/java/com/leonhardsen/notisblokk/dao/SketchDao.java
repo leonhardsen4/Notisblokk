@@ -21,7 +21,7 @@ public class SketchDao extends ConnectionFactory {
     public void update(Sketch sketch) {
         try {
             pstmt = conn.prepareStatement("UPDATE RASCUNHOS SET RASCUNHO = ? WHERE ROWID = 1") ;
-            pstmt.setString(1, sketch.getRascunho());
+            pstmt.setBytes(1, sketch.getRascunho());
             pstmt.execute();
         } catch (SQLException e) {
             e.fillInStackTrace();
@@ -38,7 +38,7 @@ public class SketchDao extends ConnectionFactory {
             pstmt = conn.prepareStatement("SELECT RASCUNHO FROM RASCUNHOS WHERE ROWID = 1");
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                sketch.setRascunho(rs.getString("RASCUNHO"));
+                sketch.setRascunho(rs.getBytes("RASCUNHO"));
             }
             return sketch;
         } catch (SQLException e) {

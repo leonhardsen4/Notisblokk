@@ -3,7 +3,7 @@ package com.leonhardsen.notisblokk.model;
 public class Sketch {
 
     private int id;
-    private String rascunho;
+    private byte[] rascunho;
 
     public Sketch() {
     }
@@ -16,12 +16,11 @@ public class Sketch {
         this.id = id;
     }
 
-    public String getRascunho() {
+    public byte[] getRascunho() {
         return rascunho;
     }
 
-    public void setRascunho(String rascunho) {
+    public void setRascunho(byte[] rascunho) {
         this.rascunho = rascunho;
     }
-
 }

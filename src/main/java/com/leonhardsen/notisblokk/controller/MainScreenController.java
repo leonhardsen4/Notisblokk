@@ -5,7 +5,6 @@ import com.leonhardsen.notisblokk.view.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -34,12 +33,11 @@ public class MainScreenController implements Initializable {
     public Label lblNotisblokk;
     public Label lblKontakter;
     public Label lblSkecth;
+    public Label lblKalender;
     public ImageView imgLogo;
     public Stage currentStage;
     public Users usr;
 
-
-    boolean isOpen;
     public static MainScreenController instance;
 
     @Override
@@ -59,63 +57,29 @@ public class MainScreenController implements Initializable {
             }
         });
 
-        lblNotisblokk.setOnMouseClicked(e -> {
-            NotisblokkView.openView(mainPane);
-            //closeSideMenu();
-        });
+        lblNotisblokk.setOnMouseClicked(e -> NotisblokkView.openView(mainPane));
 
-        lblKontakter.setOnMouseClicked(e-> {
-            KontakterView.openView(mainPane);
-            //closeSideMenu();
-        });
+        lblKontakter.setOnMouseClicked(e-> KontakterView.openView(mainPane));
 
-        lblSkecth.setOnMouseClicked(e -> {
-            SkecthView.openView(mainPane);
-            //closeSideMenu();
-        });
+        lblSkecth.setOnMouseClicked(e -> SkecthView.openView(mainPane));
 
-        lblNotisblokk.setOnMouseEntered(event -> {
-            lblNotisblokk.setStyle("-fx-background-color: #4682B4");
-        });
+        lblKalender.setOnMouseClicked(e -> KalenderView.openView(mainPane));
 
-        lblNotisblokk.setOnMouseExited(event -> {
-            lblNotisblokk.setStyle("-fx-background-color:  #002d40");
-        });
+        lblNotisblokk.setOnMouseEntered(event -> lblNotisblokk.setStyle("-fx-background-color: #4682B4"));
 
-        lblKontakter.setOnMouseEntered(event -> {
-            lblKontakter.setStyle("-fx-background-color: #4682B4");
-        });
+        lblNotisblokk.setOnMouseExited(event -> lblNotisblokk.setStyle("-fx-background-color:  #002d40"));
 
-        lblKontakter.setOnMouseExited(event -> {
-            lblKontakter.setStyle("-fx-background-color:  #002d40");
-        });
+        lblKontakter.setOnMouseEntered(event -> lblKontakter.setStyle("-fx-background-color: #4682B4"));
 
-        lblSkecth.setOnMouseEntered(event -> {
-            lblSkecth.setStyle("-fx-background-color: #4682B4");
-        });
+        lblKontakter.setOnMouseExited(event -> lblKontakter.setStyle("-fx-background-color:  #002d40"));
 
-        lblSkecth.setOnMouseExited(event -> {
-            lblSkecth.setStyle("-fx-background-color:  #002d40");
-        });
+        lblSkecth.setOnMouseEntered(event -> lblSkecth.setStyle("-fx-background-color: #4682B4"));
 
-//        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
-//        translateTransition.setToX(-125);
-//        translateTransition.play();
-//        isOpen = false;
-//
-//        imgBurger.setOnMouseClicked(e -> {
-//            if (isOpen) {
-//                closeSideMenu();
-//            } else {
-//                openSideMenu();
-//            }
-//        });
-//
-//        mainPane.setOnMouseClicked(e -> {
-//            if (isOpen) {
-//                closeSideMenu();
-//            }
-//        });
+        lblSkecth.setOnMouseExited(event -> lblSkecth.setStyle("-fx-background-color:  #002d40"));
+
+        lblKalender.setOnMouseEntered(event -> lblKalender.setStyle("-fx-background-color: #4682B4"));
+
+        lblKalender.setOnMouseExited(event -> lblKalender.setStyle("-fx-background-color:  #002d40"));
 
     }
 
@@ -133,24 +97,6 @@ public class MainScreenController implements Initializable {
         clock.setCycleCount(Animation.INDEFINITE);
         return clock;
     }
-
-//    public void openSideMenu() {
-//        drawerPane.toFront();
-//        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
-//        translateTransition.setToX(0);
-//        translateTransition.play();
-//        isOpen = true;
-//        mainPane.setDisable(true);
-//    }
-//
-//    public void closeSideMenu() {
-//        drawerPane.toFront();
-//        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), drawerPane);
-//        translateTransition.setToX(-180);
-//        translateTransition.play();
-//        isOpen = false;
-//        mainPane.setDisable(false);
-//    }
 
     public void setUser(Users user){
         usr = user;

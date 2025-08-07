@@ -53,7 +53,7 @@ public class Database {
                     """;
             String tabelaRascunhos = """
                     CREATE TABLE IF NOT EXISTS RASCUNHOS (
-                        rascunho TEXT
+                        rascunho BLOB
                     );
                     """;
             String tabelaContatos = """
@@ -70,7 +70,7 @@ public class Database {
                   """;
             String insertRascunhos = """
                     INSERT INTO RASCUNHOS (rascunho)
-                    SELECT 'Escreva algo aqui.'
+                    SELECT ?
                     WHERE NOT EXISTS (SELECT 1 FROM RASCUNHOS);
                 """;
             stmt.execute(tabelaUsuarios);

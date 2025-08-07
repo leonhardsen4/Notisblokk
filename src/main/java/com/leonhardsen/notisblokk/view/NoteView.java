@@ -29,6 +29,7 @@ public class NoteView {
         noteStage.setTitle("Note");
         noteStage.setScene(scene);
         noteStage.show();
+        //noteStage.setAlwaysOnTop(true);
     }
 
 }
