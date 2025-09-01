@@ -5,11 +5,11 @@ import com.leonhardsen.notisblokk.view.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
@@ -22,19 +22,19 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static com.leonhardsen.notisblokk.view.ChangePasswordView.ChangePasswordWindow;
+
 public class MainScreenController implements Initializable {
 
-    public AnchorPane mainPane;
-    public BorderPane borderPane;
-    public AnchorPane drawerPane;
-    public AnchorPane statusBar;
+    public AnchorPane rootPane;
     public Label lblDataHora;
     public Label lblUsuario;
-    public Label lblNotisblokk;
-    public Label lblKontakter;
-    public Label lblSkecth;
-    public Label lblKalender;
-    public ImageView imgLogo;
+    public MenuItem menuItemAnotacoes;
+    public MenuItem menuItemContatos;
+    public MenuItem menuItemRascunho;
+    public MenuItem menuItemCalendario;
+    public MenuItem menuItemAlterarSenha;
+    public MenuItem menuItemSair;
     public Stage currentStage;
     public Users usr;
 
@@ -51,35 +51,25 @@ public class MainScreenController implements Initializable {
 
         lblUsuario.setOnMouseClicked(e -> {
             try {
-                ChangePasswordView.ChangePasswordWindow(currentStage);
+                ChangePasswordWindow(currentStage);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
-        lblNotisblokk.setOnMouseClicked(e -> NotisblokkView.openView(mainPane));
+        menuItemAnotacoes.setOnAction(e -> NotisblokkView.openView(rootPane));
+        menuItemContatos.setOnAction(e -> KontakterView.openView(rootPane));
+        menuItemRascunho.setOnAction(e -> SkecthView.openView(rootPane));
+        menuItemCalendario.setOnAction(e -> KalendarView.openView(rootPane));
 
-        lblKontakter.setOnMouseClicked(e-> KontakterView.openView(mainPane));
-
-        lblSkecth.setOnMouseClicked(e -> SkecthView.openView(mainPane));
-
-        lblKalender.setOnMouseClicked(e -> KalenderView.openView(mainPane));
-
-        lblNotisblokk.setOnMouseEntered(event -> lblNotisblokk.setStyle("-fx-background-color: #4682B4"));
-
-        lblNotisblokk.setOnMouseExited(event -> lblNotisblokk.setStyle("-fx-background-color:  #002d40"));
-
-        lblKontakter.setOnMouseEntered(event -> lblKontakter.setStyle("-fx-background-color: #4682B4"));
-
-        lblKontakter.setOnMouseExited(event -> lblKontakter.setStyle("-fx-background-color:  #002d40"));
-
-        lblSkecth.setOnMouseEntered(event -> lblSkecth.setStyle("-fx-background-color: #4682B4"));
-
-        lblSkecth.setOnMouseExited(event -> lblSkecth.setStyle("-fx-background-color:  #002d40"));
-
-        lblKalender.setOnMouseEntered(event -> lblKalender.setStyle("-fx-background-color: #4682B4"));
-
-        lblKalender.setOnMouseExited(event -> lblKalender.setStyle("-fx-background-color:  #002d40"));
+        menuItemAlterarSenha.setOnAction(e -> {
+            try {
+                ChangePasswordWindow(currentStage);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        menuItemSair.setOnAction(e -> sairDoSistema());
 
     }
 
@@ -106,4 +96,13 @@ public class MainScreenController implements Initializable {
     public void setCurrentStage(Stage currentStage) {
         this.currentStage = currentStage;
     }
+
+    public void sairDoSistema() {
+        if (currentStage != null) {
+            currentStage.close();
+        }
+        Platform.exit();
+        System.exit(0);
+    }
+
 }

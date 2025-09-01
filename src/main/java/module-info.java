@@ -8,6 +8,7 @@ module com.leonhardsen.notisblokk {
     requires java.desktop;
     requires javafx.web;
     requires jdk.compiler;
+    requires javafx.graphics;
 
     opens com.leonhardsen.notisblokk.view to javafx.fxml;
     exports com.leonhardsen.notisblokk.view;

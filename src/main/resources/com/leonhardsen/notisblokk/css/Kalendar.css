@@ -1,0 +1,58 @@
+/* Estilos para as células do calendário */
+.celula-dia {
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-background-color: #ffffff;
+    -fx-padding: 5px;
+}
+
+.celula-dia:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.celula-dia-selecionada {
+    -fx-border-color: #2196F3;
+    -fx-border-width: 2px;
+    -fx-background-color: #e3f2fd;
+}
+
+.celula-dia-outro-mes {
+    -fx-background-color: #f8f8f8;
+    -fx-text-fill: #aaaaaa;
+}
+
+/* Cores para as audiências por competência */
+.audiencia-criminal {
+    -fx-background-color: #c8e6c9; /* Verde pastel */
+    -fx-border-color: #4CAF50;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 2px 5px;
+}
+
+.audiencia-infancia {
+    -fx-background-color: #bbdefb; /* Azul pastel */
+    -fx-border-color: #2196F3;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 2px 5px;
+}
+
+.audiencia-domestica {
+    -fx-background-color: #f8bbd0; /* Rosa pastel */
+    -fx-border-color: #e91e63;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 2px 5px;
+}
+
+/* Estilo para os itens de audiência na lista */
+.item-audiencia {
+    -fx-padding: 8px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.item-audiencia:hover {
+    -fx-background-color: #f5f5f5;
+}

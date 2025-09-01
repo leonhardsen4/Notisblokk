@@ -15,7 +15,7 @@ import java.util.Objects;
 public class NoteView {
 
     public static void openView(Tags tag, Notes note, String status, Stage parentStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(NoteView.class.getResource("NoteScreenHTMLEditor.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(NoteView.class.getResource("NoteScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 660, 500);
         NoteController noteController = fxmlLoader.getController();
         Stage noteStage = new Stage();

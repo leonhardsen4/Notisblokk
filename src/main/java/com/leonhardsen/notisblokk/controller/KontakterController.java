@@ -34,6 +34,7 @@ public class KontakterController implements Initializable {
     public ObservableList<Contact> contactList;
     public Stage currentStage;
     public Contact contactItem;
+    public Button btnAdicionar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

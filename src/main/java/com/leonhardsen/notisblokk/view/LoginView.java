@@ -24,7 +24,6 @@ public class LoginView extends Application{
         loginStage.setResizable(false);
         loginStage.setScene(scene);
         loginStage.show();
-        //loginStage.setAlwaysOnTop(true);
     }
 
     public static void main(String[] args) {

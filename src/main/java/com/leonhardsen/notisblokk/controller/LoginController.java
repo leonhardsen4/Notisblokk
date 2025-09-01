@@ -5,7 +5,6 @@ import com.leonhardsen.notisblokk.model.Users;
 import com.leonhardsen.notisblokk.utils.Crypthograph;
 import com.leonhardsen.notisblokk.utils.Database;
 import com.leonhardsen.notisblokk.view.LoginView;
-import com.leonhardsen.notisblokk.view.MainView;
 import com.leonhardsen.notisblokk.view.RegisterView;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,6 +14,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static com.leonhardsen.notisblokk.view.MainView.openView;
 
 public class LoginController implements Initializable {
 
@@ -74,7 +75,7 @@ public class LoginController implements Initializable {
         UsersDAO usersDAO = new UsersDAO();
         Users usr = usersDAO.find(usuario, senha);
         if (usr != null){
-            MainView.openView(usr);
+            openView(usr);
             fecharLogin();
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
