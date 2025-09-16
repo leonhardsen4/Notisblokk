@@ -23,7 +23,7 @@ public class MainView {
         mainStage.setTitle("Notisblokk :: Anotações para tudo");
         mainStage.setMaximized(true);
         mainStage.setMinWidth(850);
-        mainStage.setMinHeight(600);
+        mainStage.setMinHeight(700);
         mainStage.setScene(scene);
         mainStage.show();
         //mainStage.setAlwaysOnTop(true);

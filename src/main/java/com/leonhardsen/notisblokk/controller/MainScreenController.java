@@ -8,7 +8,8 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -22,19 +23,19 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static com.leonhardsen.notisblokk.view.ChangePasswordView.ChangePasswordWindow;
-
 public class MainScreenController implements Initializable {
 
     public AnchorPane rootPane;
     public Label lblDataHora;
     public Label lblUsuario;
-    public MenuItem menuItemAnotacoes;
-    public MenuItem menuItemContatos;
-    public MenuItem menuItemRascunho;
-    public MenuItem menuItemCalendario;
-    public MenuItem menuItemAlterarSenha;
-    public MenuItem menuItemSair;
+    public ImageView iconHome;
+    public ImageView iconNotes;
+    public ImageView iconContacts;
+    public ImageView iconSketch;
+    public ImageView iconCalendar;
+    public ImageView iconCalculator;
+    public ImageView iconSettings;
+    public ImageView iconShutdown;
     public Stage currentStage;
     public Users usr;
 
@@ -48,28 +49,51 @@ public class MainScreenController implements Initializable {
         Timeline clock = getClock();
         clock.play();
 
-
         lblUsuario.setOnMouseClicked(e -> {
             try {
-                ChangePasswordWindow(currentStage);
+                ChangePasswordView.ChangePasswordWindow(currentStage);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
-        menuItemAnotacoes.setOnAction(e -> NotisblokkView.openView(rootPane));
-        menuItemContatos.setOnAction(e -> KontakterView.openView(rootPane));
-        menuItemRascunho.setOnAction(e -> SkecthView.openView(rootPane));
-        menuItemCalendario.setOnAction(e -> KalendarView.openView(rootPane));
-
-        menuItemAlterarSenha.setOnAction(e -> {
+        iconHome.setOnMouseClicked(event -> DocumentView.openView(rootPane));
+        iconNotes.setOnMouseClicked(event -> NotisblokkView.openView(rootPane));
+        iconContacts.setOnMouseClicked(event -> KontakterView.openView(rootPane));
+        iconSketch.setOnMouseClicked(event -> SkecthView.openView(rootPane));
+        iconCalendar.setOnMouseClicked(event -> KalendarView.openView(rootPane));
+        iconCalculator.setOnMouseClicked(event -> {
             try {
-                ChangePasswordWindow(currentStage);
+                KalkulatorView.openView(currentStage);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
-        menuItemSair.setOnAction(e -> sairDoSistema());
+        iconSettings.setOnMouseClicked(event -> {
+            try {
+                ChangePasswordView.ChangePasswordWindow(currentStage);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        iconShutdown.setOnMouseClicked(event -> sairDoSistema());
+
+        Tooltip tooltipHome = new Tooltip("Hjem");
+        Tooltip tooltipNotes = new Tooltip("Notisblokk");
+        Tooltip tooltipContacts = new Tooltip("Kontakter");
+        Tooltip tooltipSketch = new Tooltip("Skisse");
+        Tooltip tooltipCalendar = new Tooltip("Kalendar");
+        Tooltip tooltipCalculator = new Tooltip("Kalkulator");
+        Tooltip tooltipSettings = new Tooltip("Innstillinger");
+        Tooltip tooltipShutdown = new Tooltip("Gå Ut");
+        Tooltip.install(iconHome, tooltipHome);
+        Tooltip.install(iconNotes, tooltipNotes);
+        Tooltip.install(iconContacts, tooltipContacts);
+        Tooltip.install(iconSketch, tooltipSketch);
+        Tooltip.install(iconCalendar, tooltipCalendar);
+        Tooltip.install(iconCalculator, tooltipCalculator);
+        Tooltip.install(iconSettings, tooltipSettings);
+        Tooltip.install(iconShutdown, tooltipShutdown);
 
     }
 

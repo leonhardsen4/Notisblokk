@@ -76,6 +76,19 @@ public class Database {
                     );
                     """;
 
+            // Tabela de DOCUMENTOS com conteúdo como BLOB
+            String tabelaDocumentos = """
+                CREATE TABLE IF NOT EXISTS DOCUMENTOS (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    titulo TEXT NOT NULL,
+                    conteudo BLOB,  -- Alterado para BLOB
+                    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    id_documento_pai INTEGER DEFAULT 0,
+                    FOREIGN KEY (id_documento_pai) REFERENCES DOCUMENTOS (id)
+                        ON DELETE CASCADE ON UPDATE CASCADE
+                );
+                """;
+
             // Tabela EVENTOS
             String tabelaEventos = """
                     CREATE TABLE IF NOT EXISTS EVENTOS (
@@ -126,6 +139,9 @@ public class Database {
 
             stmt.execute(tabelaContatos);
             System.out.println("Tabela CONTATOS criada com sucesso.");
+
+            stmt.execute(tabelaDocumentos);
+            System.out.println("Tabela DOCUMENTOS criada com sucesso.");
 
             stmt.execute(tabelaEventos);
             System.out.println("Tabela EVENTOS criada com sucesso.");

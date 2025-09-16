@@ -14,21 +14,27 @@
       <w>endereco</w>
       <w>horario</w>
       <w>infancia</w>
+      <w>innstillinger</w>
       <w>kalendar</w>
+      <w>kalkulator</w>
       <w>kontakter</w>
       <w>leonhardsen</w>
       <w>observacoes</w>
       <w>padrao</w>
+      <w>porcentagem</w>
       <w>rascunho</w>
       <w>registro</w>
       <w>relogio</w>
+      <w>rolagem</w>
       <w>sair</w>
       <w>sistema</w>
       <w>skisse</w>
       <w>tudo</w>
+      <w>ufesp</w>
       <w>usuario</w>
       <w>usuarios</w>
       <w>usuário</w>
+      <w>validadores</w>
     </words>
   </dictionary>
 </component>

@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +23,7 @@ import java.util.*;
 public class KalendarController implements Initializable {
 
     @FXML public AnchorPane rootPane;
+    @FXML public SplitPane splitPane;
     @FXML public Button btnAnterior;
     @FXML public Button btnProximo;
     @FXML public GridPane gridCabecalho;
@@ -44,6 +44,12 @@ public class KalendarController implements Initializable {
         dataAtual = LocalDate.now();
         configurarGrid();
         atualizarCalendario();
+
+        // Configurar redimensionamento automático do SplitPane
+        if (splitPane != null && rootPane != null) {
+            splitPane.prefWidthProperty().bind(rootPane.widthProperty());
+            splitPane.prefHeightProperty().bind(rootPane.heightProperty());
+        }
 
         btnNovoEvento.setOnAction(e -> abrirTelaNovoEvento());
 
@@ -366,24 +372,34 @@ public class KalendarController implements Initializable {
     }
 
     private void adicionarEventoVisual(FlowPane flowPane, Events evento) {
-        StackPane eventoPane = new StackPane();
-        eventoPane.setPrefSize(20, 20);
-        eventoPane.setStyle("-fx-background-radius: 3px; -fx-border-radius: 3px; -fx-border-width: 1px;");
+        // Criar um HBox em vez de StackPane para melhor layout
+        HBox eventoBox = new HBox();
+        eventoBox.setAlignment(Pos.CENTER_LEFT);
+        eventoBox.setSpacing(2);
+        eventoBox.setPadding(new Insets(1, 3, 1, 3));
+        eventoBox.setStyle("-fx-background-radius: 3px; -fx-border-radius: 3px; -fx-border-width: 1px;");
 
-        Label horaLabel = new Label(evento.getHorarioInicialAsString().substring(0, 2));
+        // Obter o horário completo com minutos
+        String horarioCompleto = evento.getHorarioInicialAsString();
+
+        Label horaLabel = new Label(horarioCompleto);
         horaLabel.setStyle("-fx-font-size: 8px; -fx-text-fill: #333; -fx-font-weight: bold;");
-        horaLabel.setPadding(new Insets(1));
-        eventoPane.getChildren().add(horaLabel);
+
+        // Ajustar o tamanho mínimo para caber o texto
+        eventoBox.setMinWidth(Region.USE_PREF_SIZE);
+        eventoBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
+
+        // USAR A COR SALVA NO EVENTO
+        String corEstilo = "-fx-background-color: " + evento.getCor() + "; -fx-border-color: " + escurecerCor(evento.getCor()) + ";";
+        eventoBox.setStyle(eventoBox.getStyle() + corEstilo);
+
+        eventoBox.getChildren().add(horaLabel);
 
         Tooltip tooltip = new Tooltip();
         tooltip.setText(evento.getNome() + " - " + evento.getHorarioInicialAsString() + " às " + evento.getHorarioFinalAsString());
+        Tooltip.install(eventoBox, tooltip);
 
-        // 🔥 USAR A COR SALVA NO EVENTO
-        String corEstilo = "-fx-background-color: " + evento.getCor() + "; -fx-border-color: " + escurecerCor(evento.getCor()) + ";";
-        eventoPane.setStyle(eventoPane.getStyle() + corEstilo);
-
-        Tooltip.install(eventoPane, tooltip);
-        flowPane.getChildren().add(eventoPane);
+        flowPane.getChildren().add(eventoBox);
     }
 
     private String escurecerCor(String corHex) {
