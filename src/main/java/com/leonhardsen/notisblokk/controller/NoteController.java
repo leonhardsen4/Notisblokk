@@ -24,7 +24,6 @@ import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**
@@ -63,7 +62,6 @@ public class NoteController implements Initializable {
 
     /** Formatador de data brasileiro */
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     // ========== INICIALIZAÇÃO ==========
 
@@ -111,7 +109,7 @@ public class NoteController implements Initializable {
         ObservableList<String> statusList = loadStatusList();
 
         // Configura a cell factory para exibir bolinhas coloridas
-        cmbStatus.setCellFactory(listView -> new ListCell<String>() {
+        cmbStatus.setCellFactory(listView -> new ListCell<>() {
             private final Circle circle = new Circle(5);
             private final HBox container = new HBox(5);
             private final Label label = new Label();

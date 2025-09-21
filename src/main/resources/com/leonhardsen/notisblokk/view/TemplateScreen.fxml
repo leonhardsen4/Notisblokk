@@ -61,11 +61,9 @@
                                 <Font size="15.0" />
                             </font>
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../image/add.png" />
-                           </image>
-                        </ImageView>
+                         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                             <Image url="@../image/add.png"/>
+                         </ImageView>
                      </graphic>
                         </Button>
 
@@ -74,11 +72,9 @@
                                 <Font size="15.0" />
                             </font>
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../image/exit.png" />
-                           </image>
-                        </ImageView>
+                         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                             <Image url="@../image/exit.png"/>
+                         </ImageView>
                      </graphic>
                         </Button>
 
@@ -87,11 +83,9 @@
                                 <Font size="15.0" />
                             </font>
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../image/check.png" />
-                           </image>
-                        </ImageView>
+                         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                             <Image url="@../image/check.png"/>
+                         </ImageView>
                      </graphic>
                         </Button>
                     </AnchorPane>

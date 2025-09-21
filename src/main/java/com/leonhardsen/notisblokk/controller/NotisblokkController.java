@@ -77,9 +77,6 @@ public class NotisblokkController implements Initializable {
     /** Timer para verificações periódicas de prazo */
     private Timer deadlineTimer;
 
-    /** Formatador de data brasileiro */
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
     // ========== INICIALIZAÇÃO ==========
 
     /**
@@ -176,7 +173,7 @@ public class NotisblokkController implements Initializable {
      * Configura a coluna de status com bolinhas coloridas.
      */
     private void setupStatusColumn() {
-        colStatus.setCellFactory(column -> new TableCell<Notes, String>() {
+        colStatus.setCellFactory(column -> new TableCell<>() {
             private final Circle circle = new Circle(6);
             private final HBox container = new HBox(5);
             private final Label label = new Label();
@@ -316,9 +313,7 @@ public class NotisblokkController implements Initializable {
         });
 
         // Pesquisa de tags
-        txtPesquisa.textProperty().addListener((obs, oldValue, newValue) -> {
-            refreshTagsList();
-        });
+        txtPesquisa.textProperty().addListener((obs, oldValue, newValue) -> refreshTagsList());
     }
 
     /**
@@ -407,7 +402,7 @@ public class NotisblokkController implements Initializable {
             });
 
             // Configura a button cell para mostrar a seleção atual
-            cmbFiltro.setButtonCell(new ListCell<String>() {
+            cmbFiltro.setButtonCell(new ListCell<>() {
                 private final Circle circle = new Circle(5);
                 private final HBox container = new HBox(5);
                 private final Label label = new Label();

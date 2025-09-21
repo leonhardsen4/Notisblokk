@@ -68,7 +68,7 @@
             </Label>
             <Button fx:id="btnNote" mnemonicParsing="false" style="-fx-background-color: #4682B4;" text="Nota" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <graphic>
-                    <ImageView fx:id="imgPlus" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../image/add.png" />
                     </ImageView>
                 </graphic>

@@ -104,7 +104,7 @@ public class StatusController implements Initializable {
      * Configura a coluna de cores com visualização gráfica.
      */
     private void setupColorColumn() {
-        colCor.setCellFactory(column -> new TableCell<Status, String>() {
+        colCor.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String colorHex, boolean empty) {
                 super.updateItem(colorHex, empty);

@@ -49,7 +49,7 @@ public class DigitalFolderController implements Initializable {
 
     private void configurarComponentes() {
         // Configurar a lista de documentos
-        listViewDocumentos.setCellFactory(param -> new ListCell<Document>() {
+        listViewDocumentos.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Document item, boolean empty) {
                 super.updateItem(item, empty);
@@ -63,7 +63,7 @@ public class DigitalFolderController implements Initializable {
         });
 
         // Configurar a árvore de documentos
-        treeViewDocumentos.setCellFactory(param -> new TreeCell<Document>() {
+        treeViewDocumentos.setCellFactory(param -> new TreeCell<>() {
             @Override
             protected void updateItem(Document item, boolean empty) {
                 super.updateItem(item, empty);
