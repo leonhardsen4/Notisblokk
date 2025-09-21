@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.RegisterController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.RegisterController">
    <Label layoutX="14.0" layoutY="14.0" text="Cadastro de Usuário" textFill="#8d8282" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
       <font>
          <Font size="20.0" />
@@ -26,7 +26,7 @@
          <Font size="15.0" />
       </font>
    </PasswordField>
-   <Button fx:id="btnSave" layoutX="345.0" layoutY="215.0" mnemonicParsing="false" style="-fx-background-color: #4682B4;" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+   <Button fx:id="btnSave" layoutX="345.0" layoutY="215.0" mnemonicParsing="false" style="-fx-background-color: #4682B4;" text="Salvar" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
       <font>
          <Font size="15.0" />
       </font>

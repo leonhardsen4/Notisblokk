@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.KontakterController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.KontakterController">
     <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #4682B4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KONTAKTER" textAlignment="CENTER">
          <font>
@@ -32,7 +32,7 @@
          <Cursor fx:constant="HAND" />
       </cursor>
       <font>
-         <Font name="System Bold" size="15.0" />
+         <Font size="15.0" />
       </font>
       </Button>
    <TextField fx:id="txtPesquisa" layoutX="14.0" layoutY="66.0" prefHeight="32.0" prefWidth="611.0" promptText="Pesquisa" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="169.0" AnchorPane.topAnchor="66.0">

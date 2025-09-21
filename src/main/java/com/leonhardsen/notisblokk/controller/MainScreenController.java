@@ -57,11 +57,35 @@ public class MainScreenController implements Initializable {
             }
         });
 
-        iconHome.setOnMouseClicked(event -> DocumentView.openView(rootPane));
+        iconHome.setOnMouseClicked(event -> {
+            try {
+                DocumentView.openView(rootPane);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         iconNotes.setOnMouseClicked(event -> NotisblokkView.openView(rootPane));
-        iconContacts.setOnMouseClicked(event -> KontakterView.openView(rootPane));
-        iconSketch.setOnMouseClicked(event -> SkecthView.openView(rootPane));
-        iconCalendar.setOnMouseClicked(event -> KalendarView.openView(rootPane));
+        iconContacts.setOnMouseClicked(event -> {
+            try {
+                KontakterView.openView(rootPane);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        iconSketch.setOnMouseClicked(event -> {
+            try {
+                SkecthView.openView(currentStage);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        iconCalendar.setOnMouseClicked(event -> {
+            try {
+                KalendarView.openView(rootPane);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         iconCalculator.setOnMouseClicked(event -> {
             try {
                 KalkulatorView.openView(currentStage);

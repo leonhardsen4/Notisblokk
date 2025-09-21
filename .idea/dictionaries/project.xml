@@ -6,10 +6,13 @@
       <w>anotacoes</w>
       <w>anotações</w>
       <w>atividades</w>
+      <w>baos</w>
       <w>cabecalho</w>
       <w>calendario</w>
+      <w>concluida</w>
       <w>contatos</w>
       <w>descricao</w>
+      <w>desserializa</w>
       <w>duracao</w>
       <w>endereco</w>
       <w>horario</w>
@@ -19,14 +22,18 @@
       <w>kalkulator</w>
       <w>kontakter</w>
       <w>leonhardsen</w>
+      <w>modificacao</w>
       <w>observacoes</w>
       <w>padrao</w>
       <w>porcentagem</w>
+      <w>pstmt</w>
       <w>rascunho</w>
       <w>registro</w>
       <w>relogio</w>
       <w>rolagem</w>
       <w>sair</w>
+      <w>serializa</w>
+      <w>serializado</w>
       <w>sistema</w>
       <w>skisse</w>
       <w>tudo</w>

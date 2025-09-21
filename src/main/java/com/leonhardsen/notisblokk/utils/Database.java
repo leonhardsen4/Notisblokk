@@ -42,19 +42,29 @@ public class Database {
 
             // Tabela de NOTAS com relação correta com ETIQUETAS
             String tabelaNotas = """
-                    CREATE TABLE IF NOT EXISTS NOTAS (
-                        id     INTEGER PRIMARY KEY AUTOINCREMENT,
-                        id_tag INTEGER NOT NULL,
-                        data   TEXT    NOT NULL,
-                        titulo TEXT    NOT NULL,
-                        relato BLOB,
-                        status TEXT    NOT NULL DEFAULT 'A RESOLVER',
-                        FOREIGN KEY (id_tag) REFERENCES TAGS (id)\s
-                            ON DELETE CASCADE ON UPDATE CASCADE,
-                        FOREIGN KEY (status) REFERENCES STATUS (status)\s
-                            ON DELETE RESTRICT ON UPDATE CASCADE
+                   CREATE TABLE IF NOT EXISTS NOTAS (
+                       id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+                       id_tag             INTEGER REFERENCES TAGS (id) ON DELETE CASCADE
+                                                                       ON UPDATE CASCADE
+                                                  NOT NULL ON CONFLICT ROLLBACK,
+                       data               TEXT    NOT NULL,
+                       titulo             TEXT    NOT NULL,
+                       relato             BLOB,
+                       status             TEXT    NOT NULL ON CONFLICT ROLLBACK
+                                                  DEFAULT [A RESOLVER],
+                       ultima_modificacao TEXT,
+                       deadline           TEXT
+                   );
+                    \s""";
+
+            // Tabela de Templates
+            String tabelaTemplates = """
+                    CREATE TABLE IF NOT EXISTS TEMPLATES (
+                      id     INTEGER PRIMARY KEY AUTOINCREMENT,
+                      titulo TEXT    NOT NULL,
+                      texto  BLOB
                     );
-                   \s""";
+                    """;
 
             // Tabela de RASCUNHOS com registro único
             String tabelaRascunhos = """
@@ -130,6 +140,9 @@ public class Database {
 
             stmt.execute(tabelaNotas);
             System.out.println("Tabela NOTAS criada com sucesso.");
+
+            stmt.execute(tabelaTemplates);
+            System.out.println("Tabela TEMPLATES criada com sucesso.");
 
             stmt.execute(tabelaUsuarios);
             System.out.println("Tabela USUARIOS criada com sucesso.");

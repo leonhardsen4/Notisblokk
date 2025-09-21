@@ -4,47 +4,36 @@ import com.leonhardsen.notisblokk.model.Contact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDao extends GenericDAO<Contact> {
 
-    public ContactDao() {
-        this.conn = getConnection();
-    }
-
     @Override
     public void save(Contact contact) {
-        try {
-            sql = "INSERT INTO CONTATOS VALUES(?, ?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(2, contact.getNome());
-            pstmt.setString(3, contact.getTelefone());
-            pstmt.setString(4, contact.getEmail());
-            pstmt.setString(5, contact.getEndereco());
-            pstmt.setString(6, contact.getObservacoes());
+        String sql = "INSERT INTO CONTATOS (NOME, TELEFONE, EMAIL, ENDERECO, OBSERVACOES) VALUES(?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, contact.getNome());
+            pstmt.setString(2, contact.getTelefone());
+            pstmt.setString(3, contact.getEmail());
+            pstmt.setString(4, contact.getEndereco());
+            pstmt.setString(5, contact.getObservacoes());
             pstmt.execute();
         } catch (SQLException e) {
-            e.fillInStackTrace();
-            e.getCause();
-            throw new RuntimeException(e.getMessage());
-        } finally {
-            closeConnection(conn, pstmt);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(Contact contact) {
-        try {
-            sql = "UPDATE CONTATOS SET " +
-                    "NOME = ?, " +
-                    "TELEFONE = ?, " +
-                    "EMAIL = ?, " +
-                    "ENDERECO = ?, " +
-                    "OBSERVACOES = ? " +
-                    "WHERE ID = ?";
-            pstmt = conn.prepareStatement(sql);
+        String sql = "UPDATE CONTATOS SET NOME = ?, TELEFONE = ?, EMAIL = ?, ENDERECO = ?, OBSERVACOES = ? WHERE ID = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, contact.getNome());
             pstmt.setString(2, contact.getTelefone());
             pstmt.setString(3, contact.getEmail());
@@ -53,81 +42,76 @@ public class ContactDao extends GenericDAO<Contact> {
             pstmt.setInt(6, contact.getId());
             pstmt.execute();
         } catch (SQLException e) {
-            e.fillInStackTrace();
-            e.getCause();
-            throw new RuntimeException(e.getMessage());
-        } finally {
-            closeConnection(conn, pstmt);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(Contact contact) {
-        try {
-            sql = "DELETE FROM CONTATOS WHERE ID = ?";
-            pstmt = conn.prepareStatement(sql);
+        String sql = "DELETE FROM CONTATOS WHERE ID = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, contact.getId());
             pstmt.execute();
         } catch (SQLException e) {
-            e.fillInStackTrace();
-            e.getCause();
-            throw new RuntimeException(e.getMessage());
-        } finally {
-            closeConnection(conn, pstmt);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public ObservableList<Contact> getAll() {
-        return null;
+        return getAll(null); // Chama a pesquisa com string vazia para retornar todos
     }
 
     public ObservableList<Contact> getAll(String string) {
         List<Contact> listContacts = new ArrayList<>();
-        try {
-            if (string == null || string.isEmpty() || string.isBlank()) {
-                sql = "SELECT * FROM CONTATOS ORDER BY NOME";
-            } else {
-                sql = "SELECT * FROM CONTATOS WHERE NOME LIKE '%" + string + "%' " +
-                        "OR TELEFONE LIKE '%" + string + "%' " +
-                        "OR EMAIL LIKE '%" + string + "%' " +
-                        "OR ENDERECO LIKE '%" + string + "%' " +
-                        "OR OBSERVACOES LIKE '%" + string + "%' ";
-            }
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Contact contact = new Contact();
-                contact.setId(rs.getInt("ID"));
-                contact.setNome(rs.getString("NOME"));
-                contact.setTelefone(rs.getString("TELEFONE"));
-                contact.setEmail(rs.getString("EMAIL"));
-                contact.setEndereco(rs.getString("ENDERECO"));
-                contact.setObservacoes(rs.getString("OBSERVACOES"));
-                listContacts.add(contact);
-            }
-            return FXCollections.observableArrayList(listContacts);
-        } catch (SQLException ex) {
-            ex.fillInStackTrace();
-            ex.getCause();
-            throw new RuntimeException(ex.getMessage());
-        } finally {
-            closeConnection(conn, pstmt, rs);
+        String sql;
+        if (string == null || string.isBlank()) {
+            sql = "SELECT * FROM CONTATOS ORDER BY NOME";
+        } else {
+            sql = "SELECT * FROM CONTATOS WHERE NOME LIKE ? OR TELEFONE LIKE ? OR EMAIL LIKE ? OR ENDERECO LIKE ? OR OBSERVACOES LIKE ?";
         }
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            if (string != null && !string.isBlank()) {
+                String likePattern = "%" + string + "%";
+                pstmt.setString(1, likePattern);
+                pstmt.setString(2, likePattern);
+                pstmt.setString(3, likePattern);
+                pstmt.setString(4, likePattern);
+                pstmt.setString(5, likePattern);
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Contact contact = new Contact();
+                    contact.setId(rs.getInt("ID"));
+                    contact.setNome(rs.getString("NOME"));
+                    contact.setTelefone(rs.getString("TELEFONE"));
+                    contact.setEmail(rs.getString("EMAIL"));
+                    contact.setEndereco(rs.getString("ENDERECO"));
+                    contact.setObservacoes(rs.getString("OBSERVACOES"));
+                    listContacts.add(contact);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return FXCollections.observableArrayList(listContacts);
     }
 
-        public Boolean findContact(String string) {
-            try {
-                sql = "SELECT * FROM CONTATOS WHERE NOME LIKE '" + string + "'";
-                pstmt = conn.prepareStatement(sql);
-                rs = pstmt.executeQuery();
+    public Boolean findContact(String name) {
+        String sql = "SELECT 1 FROM CONTATOS WHERE NOME = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next();
-            } catch (SQLException ex) {
-                ex.fillInStackTrace();
-                ex.getCause();
-                throw new RuntimeException(ex.getMessage());
-            } finally {
-                closeConnection(conn, pstmt, rs);
             }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
     }
+}

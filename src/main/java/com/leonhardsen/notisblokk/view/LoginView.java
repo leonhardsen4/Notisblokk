@@ -26,9 +26,5 @@ public class LoginView extends Application{
         loginStage.show();
     }
 
-//    public static void main(String[] args) {
-//        LoginView.launch();
-//    }
-
 }
 

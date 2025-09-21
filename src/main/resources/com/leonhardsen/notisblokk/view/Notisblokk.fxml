@@ -12,83 +12,93 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.NotisblokkController">
-    <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #4682B4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTISBLOKK" textAlignment="CENTER">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Text>
+<AnchorPane fx:id="rootPane" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leonhardsen.notisblokk.controller.NotisblokkController">
+    <AnchorPane prefHeight="50.0" style="-fx-background-color: #4682B4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTISBLOKK" textAlignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
     </AnchorPane>
-    <SplitPane dividerPositions="0.5" layoutX="5.0" layoutY="50.0" prefHeight="346.0" prefWidth="589.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="55.0">
-        <AnchorPane maxWidth="300.0" minWidth="100.0" prefWidth="200.0">
-            <ListView fx:id="listTag" layoutX="10.0" layoutY="72.0" prefHeight="255.0" prefWidth="260.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="72.0" />
-            <Label layoutX="10.0" layoutY="42.0" text="Tags" textFill="#8d8282" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+    <SplitPane dividerPositions="0.35" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+        <AnchorPane maxWidth="400.0" minWidth="220.0" prefWidth="250.0">
+            <Label layoutX="10.0" layoutY="10.0" text="Tags" textFill="#8d8282">
                 <font>
                     <Font size="20.0" />
                 </font>
             </Label>
-            <Button fx:id="btnTag" layoutX="57.0" layoutY="8.0" mnemonicParsing="false" style="-fx-background-color: #4682B4;" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <Button fx:id="btnTag" mnemonicParsing="false" style="-fx-background-color: #4682B4;" text="Tag" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <graphic>
                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../image/add.png" />
-                  <cursor>
-                     <Cursor fx:constant="HAND" />
-                  </cursor>
                     </ImageView>
                 </graphic>
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
             </Button>
-           <TextField fx:id="txtPesquisa" layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="260.0" promptText="Pesquisa" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
-            <cursor>
-               <Cursor fx:constant="TEXT" />
-            </cursor>
-         </TextField>
+            <TextField fx:id="txtPesquisa" promptText="Pesquisar Tags" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
+            <ListView fx:id="listTag" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="72.0" />
+            <Button fx:id="btnManageTemplates" mnemonicParsing="false" style="-fx-background-color: #4682B4;" text="Gerenciar Templates" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../image/icons8-documents-80.png" />
+                    </ImageView>
+                </graphic>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </Button>
         </AnchorPane>
-        <AnchorPane minWidth="300.0">
-            <TableView fx:id="tblNote" layoutX="14.0" layoutY="72.0" prefHeight="456.0" prefWidth="462.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="72.0">
-                <columns>
-                    <TableColumn fx:id="colID" editable="false" maxWidth="70.0" minWidth="40.0" prefWidth="40.0" text="ID" visible="false" />
-                    <TableColumn fx:id="colData" editable="false" maxWidth="80.0" minWidth="80.0" text="Data" />
-                    <TableColumn fx:id="colTitulo" editable="false" prefWidth="500.0" text="Título" />
-               <TableColumn fx:id="colStatus" editable="false" maxWidth="180.0" prefWidth="120.0" text="Status" />
-                </columns>
-            <columnResizePolicy>
-               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-            </TableView>
-            <Label layoutX="27.0" layoutY="15.0" text="Notas" textFill="#8d8282" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <AnchorPane minWidth="450.0">
+            <Label text="Notas" textFill="#8d8282" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <font>
                     <Font size="20.0" />
                 </font>
             </Label>
-            <Button fx:id="btnNote" layoutX="392.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: #4682B4;" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <Button fx:id="btnNote" mnemonicParsing="false" style="-fx-background-color: #4682B4;" text="Nota" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <graphic>
                     <ImageView fx:id="imgPlus" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../image/add.png" />
-                  <cursor>
-                     <Cursor fx:constant="HAND" />
-                  </cursor>
                     </ImageView>
                 </graphic>
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
             </Button>
-         <ComboBox fx:id="cmbFiltro" layoutX="292.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" promptText="Filtrar" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor></ComboBox>
-         <TextField fx:id="txtPesquisaNotas" layoutX="11.0" layoutY="40.0" prefHeight="25.0" prefWidth="270.0" promptText="Pesquisa" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="40.0">
-            <cursor>
-               <Cursor fx:constant="TEXT" />
-            </cursor>
-         </TextField>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+                <TextField fx:id="txtPesquisaNotas" promptText="Pesquisar em todas as notas" HBox.hgrow="ALWAYS" />
+                <ComboBox fx:id="cmbFiltro" prefHeight="25.0" prefWidth="200.0" promptText="Filtrar por Status" style="-fx-background-color: #4682B4;">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </ComboBox>
+            </HBox>
+            <TableView fx:id="tblNote" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="72.0">
+                <columns>
+                    <TableColumn fx:id="colData" prefWidth="100.0" text="Data" />
+                    <TableColumn fx:id="colTitulo" prefWidth="250.0" text="Título" />
+                    <TableColumn fx:id="colStatus" prefWidth="120.0" text="Status" />
+                    <TableColumn fx:id="colDeadline" prefWidth="100.0" text="Deadline" />
+                    <TableColumn fx:id="colUltimaModificacao" prefWidth="150.0" text="Última Modificação" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
         </AnchorPane>
     </SplitPane>
 </AnchorPane>

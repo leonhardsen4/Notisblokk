@@ -1,5 +1,8 @@
 package com.leonhardsen.notisblokk.model;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Notes {
 
     private int id;
@@ -8,10 +11,11 @@ public class Notes {
     private String titulo;
     private byte[] relato;
     private String status;
+    private LocalDateTime ultimaModificacao;
+    private String deadline;
 
     public Notes() {
     }
-
 
     public int getId() {
         return id;
@@ -60,4 +64,28 @@ public class Notes {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public LocalDateTime getUltimaModificacao() {
+        return ultimaModificacao;
+    }
+
+    public void setUltimaModificacao(LocalDateTime ultimaModificacao) {
+        this.ultimaModificacao = ultimaModificacao;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getUltimaModificacaoFormatada() {
+        if (ultimaModificacao != null) {
+            return ultimaModificacao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        }
+        return "";
+    }
+
 }

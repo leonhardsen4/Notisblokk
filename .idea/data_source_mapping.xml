@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="mock:///TemplateDAO.java" value="53dc33da-63fe-4153-9db2-f38242fb2876" />
+    <file url="mock:///TemplateDAO.java" value="53dc33da-63fe-4153-9db2-f38242fb2876" />
+    <file url="mock:///TemplateDAO.java" value="53dc33da-63fe-4153-9db2-f38242fb2876" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/53dc33da-63fe-4153-9db2-f38242fb2876/console.sql" value="53dc33da-63fe-4153-9db2-f38242fb2876" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/leonhardsen/notisblokk/dao/TemplateDAO.java" value="53dc33da-63fe-4153-9db2-f38242fb2876" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/leonhardsen/notisblokk/utils/Database.java" value="53dc33da-63fe-4153-9db2-f38242fb2876" />
+  </component>
+</project>

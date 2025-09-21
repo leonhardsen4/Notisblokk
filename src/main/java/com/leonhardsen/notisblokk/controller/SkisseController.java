@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.HTMLEditor;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +16,7 @@ public class SkisseController implements Initializable {
 
     public AnchorPane rootPane;
     public HTMLEditor htmlEditor;
+    public Stage currentStage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,6 +50,10 @@ public class SkisseController implements Initializable {
     public byte[] setData(){
         SketchDao sketchDao = new SketchDao();
         return sketchDao.setSketch().getRascunho();
+    }
+
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
     }
 
 }
